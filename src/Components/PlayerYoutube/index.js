@@ -5,6 +5,7 @@ import './style.css';
 const PlayerYoutube =({video}) => {
     //const  numID ='yTEei7_gYIY'
     //console.log('videoID=', video.id);
+    //
     return (
         <div id='pol'>
             {/*<div className='modalka_div' onClick={() => {CloseModalWindow()}}>*/}
