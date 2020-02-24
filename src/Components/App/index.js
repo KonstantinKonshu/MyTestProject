@@ -1,17 +1,21 @@
 import React, {Component} from "react";
-// import ArticleList from "./ArticleList"
-// import articles from "../fixtures"
 import 'bootstrap/dist/css/bootstrap.css';
-// import axios from 'axios'
-//
-// import PersonList from "./PersonList";
-import SearchBar from "./Searchbar";
-import YoutubeAPI from "./YoutubeAPI";
-import VideoList from "./VideoList";
-//import './stylePagination.css';
-// import PlayerYoutube from "./PlayerYoutube";
+import SearchBar from "../Searchbar";
+import YoutubeAPI from "../YoutubeAPI";
+import VideoList from "../VideoList"
+import {
+    BrowserRouter as Router,
+    Switch,
+    Route,
+    Link
+} from "react-router-dom";
+import createBrowserHistory from "history/createBrowserHistory";
+import Qwerty from "../qwerty"
 
 const KEY = 'AIzaSyDf4KrC8LEQ4tcHCz1e53od21s-341bIKc';
+const history = createBrowserHistory();
+const qs = require('query-string');
+
 
 
 
@@ -20,7 +24,6 @@ class App extends Component{
     constructor(props) {
         super(props);
         this.state = {
-            // reverted: false,
             videos: [],
             nextPageToken: null,
             prevPageToken: null,
@@ -38,17 +41,26 @@ class App extends Component{
     }
 
     handleOnClick = e => {
-        var pol = document.getElementById('pol');
+        let pol = document.getElementById('pol');
         if(e.target != pol && e.target.parentNode != pol){
             this.setState({
                 selectedVideo: null,
                 isOpenModal: null
             })
         }
-    }
+    };
 
     componentDidMount() {
+        // console.log(history.location.search);
+        const  s = qs.parse(history.location.search);
+        // console.log(s);
+        // this.setState({
+        //     search: s['search'] || ""
+        // });
+        this.handleSubmit(s['search']);
+        //console.log(this.state.search);
         document.addEventListener('mouseup', this.handleOnClick);
+
     }
 
     componentWillUnmount() {
@@ -69,7 +81,7 @@ class App extends Component{
                 // kind: "youtube#video"
             }
         })
-            .then(response => this.setState({videos: response.data.items, count: response.data.items.length, nextPageToken: response.data.nextPageToken, prevPageToken: response.data.prevPageToken}))
+            .then(response => this.setState({videos: response.data.items, nextPageToken: response.data.nextPageToken, prevPageToken: response.data.prevPageToken}))
             .catch(error => console.log("ERROR", error))
     };
 
@@ -111,55 +123,64 @@ class App extends Component{
 
     };
 
-    // closeModalWindow = () =>{
-    //     console.log('close window')
-    //     this.setState({
-    //         isOpenModal: false
-    //     })
-    // }
-
     render() {
-        // const  PlayerYB = this.state.isOpenModal && <PlayerYoutube video={this.state.selectedVideo} CloseModalWindow={this.CloseModalWindow}/>
-        return (
-            <div className="container">
-                <div className="jumbotron">
-                    <h3 className="display-5">
-                        {/*My app*/}
-                        {this.state.nameTitle}
-                        {/*<button className="btn btn-dark" onClick={this.revert}>Revert</button>*/}
-                    </h3>
-                </div>
-                <div>
-                    <SearchBar handleFormSubmit={this.handleSubmit} />
-                </div>
+       return (
+            <Router history={history}>
+                <div className="container">
+                    <div className="jumbotron">
+                        <h3 className="display-5">
+                            {this.state.nameTitle}
+                        </h3>
+                    </div>
+                    <div>
+                        {/*<Link to={`/search/${this.state.termFromSearchBar}`}>*/}
+                            <SearchBar handleFormSubmit={this.handleSubmit} />
+                        {/*</Link>*/}
+                    </div>
 
-                <div className='ui grid'>
-                    <div className='ui row'>
-                        <div>
-                            <VideoList handleVideoSelect={this.handleVideoSelect} videos={this.state.videos}
-                                       isOpenModal = {this.state.isOpenModal} selectedVideo = {this.state.selectedVideo}
-                            />
+                    <div className='ui grid'>
+                        <div className='ui row'>
+                            <div>
+                                {/*    <VideoList handleVideoSelect={this.handleVideoSelect} videos={this.state.videos}*/}
+                                {/*               isOpenModal = {this.state.isOpenModal} selectedVideo = {this.state.selectedVideo}*/}
+                                {/*    />*/}
+
+                                    {/*<Route path='/videolist' component={Qwerty}/>*/}
+                                    {/*<Route path='/videolist'>*/}
+                                    {/*    <Qwerty*/}
+                                    {/*        search = {this.state.search}*/}
+                                    {/*    />*/}
+                                    {/*</Route>*/}
+                                    <Route path={`/videolist`}>
+                                        <VideoList handleVideoSelect={this.handleVideoSelect} videos={this.state.videos}
+                                                   isOpenModal = {this.state.isOpenModal} selectedVideo = {this.state.selectedVideo}
+                                                   search = {this.state.search}
+                                        />
+                                    </Route>
+                            </div>
                         </div>
                     </div>
+                    {/*<PersonList/>*/}
+                    <div>
+                        {/*<Route path='/search'>*/}
+                            <h1>lol</h1>
+                        {/*</Route>*/}
+                    </div>
+
+                    <div>
+                        <button id='prev' style={{display: 'none'}} onClick={this.handlePreviousPage}>Previous</button>
+                        <button id='next' onClick={this.handleNextPage}>Next</button>
+                    </div>
+
+                    {/*<div>*/}
+                    {/*    {PlayerYB}*/}
+                    {/*</div>*/}
+
+                    {/*<PlayerYoutube video={this.state.selectedVideo}/>*/}
+
+                    {/*<ArticleList  articles={this.state.reverted ? articles.slice().reverse() : articles} foo="bar" flag/>*/}
                 </div>
-                {/*<PersonList/>*/}
-
-                <div>
-                    <button id='prev' style={{display: 'none'}} onClick={this.handlePreviousPage}>Previous</button>
-                    <button id='next' onClick={this.handleNextPage}>Next</button>
-                </div>
-
-                {/*<div>*/}
-                {/*    {PlayerYB}*/}
-                {/*</div>*/}
-
-
-                {/*<PlayerYoutube video={this.state.selectedVideo}/>*/}
-
-
-
-                {/*<ArticleList  articles={this.state.reverted ? articles.slice().reverse() : articles} foo="bar" flag/>*/}
-            </div>
+            </Router>
         )
     };
 
@@ -239,3 +260,6 @@ class App extends Component{
 }
 
 export default App
+// render(<Router></Router>
+//
+//     ,document.getElementById('root'))
