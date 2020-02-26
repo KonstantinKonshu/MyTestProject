@@ -3,22 +3,14 @@ import 'bootstrap/dist/css/bootstrap.css';
 import SearchBar from "../Searchbar";
 import YoutubeAPI from "../YoutubeAPI";
 import VideoList from "../VideoList"
-import {
-    BrowserRouter as Router,
-    Switch,
-    Route,
-    Link
-} from "react-router-dom";
-import createBrowserHistory from "history/createBrowserHistory";
+import {BrowserRouter as Router, Route, Link} from "react-router-dom";
+// import createBrowserHistory from "history/createBrowserHistory";
+import { createBrowserHistory } from "history";
 import Qwerty from "../qwerty"
 
-const KEY = 'AIzaSyDf4KrC8LEQ4tcHCz1e53od21s-341bIKc';
+const KEY = 'AIzaSyAiFx2l1_zXnPOZtJhUriJqg0BDhyWlItQ';
 const history = createBrowserHistory();
 const qs = require('query-string');
-
-
-
-
 
 class App extends Component{
     constructor(props) {
@@ -31,13 +23,13 @@ class App extends Component{
             pageToken: null,
             search: "",
             isOpenModal: false,
+            isOpenChannel:false,
             nameTitle: "My app",
             channelId: null
         };
-        this.handleNextPage = this.handleNextPage.bind(this);
-        this.handlePreviousPage=this.handlePreviousPage.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleVideoSelect = this.handleVideoSelect.bind(this);
+        this.handleLeafing = this.handleLeafing.bind(this);
     }
 
     handleOnClick = e => {
@@ -51,13 +43,21 @@ class App extends Component{
     };
 
     componentDidMount() {
-        // console.log(history.location.search);
+        console.log('componentDidMount');
         const  s = qs.parse(history.location.search);
-        // console.log(s);
-        // this.setState({
-        //     search: s['search'] || ""
-        // });
+        console.log(s);
+        //alert(s['id']);
         this.handleSubmit(s['search']);
+        // if(s['search'])
+        //     this.processingVideoId();
+        // if(s['id']!==null){
+        //     this.setState({
+        //         selectedVideo:  ,
+        //         isOpenModal: true
+        //     });
+        // };
+
+        console.log('history',history);
         //console.log(this.state.search);
         document.addEventListener('mouseup', this.handleOnClick);
 
@@ -68,35 +68,58 @@ class App extends Component{
     }
 
 
-    handleSubmit = termFromSearchBar => {
+    // processingVideoId = () => {
+    //     const  s = qs.parse(history.location.search);
+    //     console.log('processingVideoId', s);
+    //     if(s['id']){
+    //         for(let i = 0; i < 10; i++ ){
+    //             if(s['id']=== this.videos[i].id.videoId)
+    //                 alert('Hello');
+    //         }
+    //     }
+    //  };
+
+    handleSubmit = (termFromSearchBar) => {
+        const params = {
+            q: termFromSearchBar,
+            part: 'snippet',
+            key: KEY,
+            maxResults: 10,
+            // kind: "youtube#video"
+        };
         document.getElementById('btn-back').style.display = 'none';
         document.getElementById('prev').style.display = 'none';
-        this.setState({search: termFromSearchBar, nameTitle: termFromSearchBar, channelId: null});
-        YoutubeAPI.get('https://www.googleapis.com/youtube/v3/search', {
-            params: {
-                q: termFromSearchBar,
-                part: 'snippet',
-                key: KEY,
-                maxResults: 10,
-                // kind: "youtube#video"
-            }
-        })
-            .then(response => this.setState({videos: response.data.items, nextPageToken: response.data.nextPageToken, prevPageToken: response.data.prevPageToken}))
-            .catch(error => console.log("ERROR", error))
+        this.setState({
+            search: termFromSearchBar,
+            nameTitle: termFromSearchBar,
+            channelId: null,
+            isOpenChannel:false
+        });
+        YoutubeAPI.get('https://www.googleapis.com/youtube/v3/search', {params})
+            .then(response =>
+                this.setState({
+                    videos: response.data.items,
+                    nextPageToken: response.data.nextPageToken,
+                    prevPageToken: response.data.prevPageToken
+                })
+            )
+            .catch(error => console.log("ERROR", error));
     };
 
     clickChannelSelect = (channel) =>{
-        // this.setState({search: termFromSearchBar});
         YoutubeAPI.get('https://www.googleapis.com/youtube/v3/search', {
             params: {
-                // q: termFromSearchBar,
                 channelId: channel.id.channelId,
                 part: 'snippet',
                 key: KEY,
                 maxResults: 10
             }
         })
-            .then(response => this.setState({videos: response.data.items, count: response.data.items.length}))
+            .then(response =>
+                this.setState({
+                    videos: response.data.items
+                })
+            )
             .catch(error => console.log("ERROR", error));
         document.getElementById('btn-back').style.display = 'initial';
     };
@@ -107,16 +130,15 @@ class App extends Component{
             this.setState({
                 selectedVideo: video,
                 isOpenModal: true
-            })
+            });
         }
         if(video.id.kind==="youtube#channel"){
             console.log('click channel');
-            // alert(`channel ${video.snippet.title}`);
-
             this.setState({
                 channelId: video.snippet.channelId,
                 selectedVideo: video,
-                nameTitle: `Channel ${video.snippet.title}`
+                nameTitle: `Channel ${video.snippet.title}`,
+                isOpenChannel: true
             });
             this.clickChannelSelect(video)
         }
@@ -133,9 +155,7 @@ class App extends Component{
                         </h3>
                     </div>
                     <div>
-                        {/*<Link to={`/search/${this.state.termFromSearchBar}`}>*/}
-                            <SearchBar handleFormSubmit={this.handleSubmit} />
-                        {/*</Link>*/}
+                        <SearchBar handleFormSubmit={this.handleSubmit} searchStr = {this.state.search}/>
                     </div>
 
                     <div className='ui grid'>
@@ -144,122 +164,54 @@ class App extends Component{
                                 {/*    <VideoList handleVideoSelect={this.handleVideoSelect} videos={this.state.videos}*/}
                                 {/*               isOpenModal = {this.state.isOpenModal} selectedVideo = {this.state.selectedVideo}*/}
                                 {/*    />*/}
-
-                                    {/*<Route path='/videolist' component={Qwerty}/>*/}
-                                    {/*<Route path='/videolist'>*/}
-                                    {/*    <Qwerty*/}
-                                    {/*        search = {this.state.search}*/}
-                                    {/*    />*/}
-                                    {/*</Route>*/}
-                                    <Route path={`/videolist`}>
-                                        <VideoList handleVideoSelect={this.handleVideoSelect} videos={this.state.videos}
-                                                   isOpenModal = {this.state.isOpenModal} selectedVideo = {this.state.selectedVideo}
-                                                   search = {this.state.search}
-                                        />
-                                    </Route>
+                                <Route path={`/videolist`}>
+                                    <VideoList handleVideoSelect={this.handleVideoSelect} videos={this.state.videos}
+                                               isOpenModal = {this.state.isOpenModal} selectedVideo = {this.state.selectedVideo}
+                                               search = {this.state.search} history={history} isOpenChannel={this.state.isOpenChannel}
+                                    />
+                                </Route>
                             </div>
                         </div>
                     </div>
-                    {/*<PersonList/>*/}
-                    <div>
-                        {/*<Route path='/search'>*/}
-                            <h1>lol</h1>
-                        {/*</Route>*/}
-                    </div>
 
                     <div>
-                        <button id='prev' style={{display: 'none'}} onClick={this.handlePreviousPage}>Previous</button>
-                        <button id='next' onClick={this.handleNextPage}>Next</button>
+                        <button id='prev'  style={{display: 'none'}} onClick={() => this.handleLeafing(this.state.prevPageToken, false)}>Previous</button>
+                        <button id='next' onClick={()=>this.handleLeafing(this.state.nextPageToken, true)}>Next</button>
                     </div>
-
-                    {/*<div>*/}
-                    {/*    {PlayerYB}*/}
-                    {/*</div>*/}
-
-                    {/*<PlayerYoutube video={this.state.selectedVideo}/>*/}
-
-                    {/*<ArticleList  articles={this.state.reverted ? articles.slice().reverse() : articles} foo="bar" flag/>*/}
                 </div>
             </Router>
         )
     };
 
-    handleNextPage = () => {
+    handleLeafing = (pgToken, indicator) => {
         let params = {
             q: this.state.search,
             part: 'snippet',
             key: KEY,
             maxResults: 10,
-            pageToken: this.state.nextPageToken,
+            pageToken: pgToken,
         };
+        if (indicator) document.getElementById('prev').style.display = 'initial';
         if (this.state.channelId !== null) {
             params["channelId"] = this.state.channelId;
-            params['type'] = "video"
+            params['type'] = "video";
         }
-
         YoutubeAPI.get('https://www.googleapis.com/youtube/v3/search', {params})
-            .then(response => this.setState({videos: response.data.items, count: response.data.items.length, nextPageToken: response.data.nextPageToken, prevPageToken: response.data.prevPageToken}))
+            .then(response => {
+                this.setState({
+                    videos: response.data.items,
+                    nextPageToken: response.data.nextPageToken,
+                    prevPageToken: response.data.prevPageToken
+                });
+                console.log(response.data.prevPageToken);
+                if (response.data.prevPageToken === undefined)
+                    document.getElementById('prev').style.display = 'none';
+                })
             .catch(error => console.log("ERROR", error));
-        document.getElementById('prev').style.display = 'initial';
-        //document.getElementById('prev').hidden = true;
     };
-
-    handlePreviousPage = () => {
-        let params = {
-            q: this.state.search,
-            part: 'snippet',
-            key: KEY,
-            maxResults: 10,
-            pageToken: this.state.prevPageToken,
-        };
-        if (this.state.channelId !== null) {
-            params["channelId"] = this.state.channelId;
-            params['type'] = "video"
-
-        }
-
-        YoutubeAPI.get('https://www.googleapis.com/youtube/v3/search', {params})
-            .then(response => this.setState({videos: response.data.items, nextPageToken: response.data.nextPageToken, prevPageToken: response.data.prevPageToken}))
-            .catch(error => console.log("ERROR", error));
-        // if(this.state.prevPageToken==='undefined')
-        //     alert(this.state.prevPageToken);
-    };
-
-    // revert = () => this.setState(
-    //     {
-    //         reverted: !this.state.reverted
-    //     }
-    // );
-    //
-    // ClickSearch = async (termFromSearchBar) => {
-    //         try {
-    //             const response = await YoutubeAPI.get(`https://www.googleapis.com/youtube/v3/search?part=snippet&q=${termFromSearchBar}&key=AIzaSyACPUVcES9XwGzLSbsEAeGSRjJ9wSBQcz4`);
-    //             this.setState({
-    //                 videos: response.data.items
-    //             })
-    //         } catch (e) {
-    //
-    //         }
-    //     };
-
-
-
-    // handlePageClick = data => {
-    //     console.log('111')
-    //     let selected = data.selected;
-    //     let offset = Math.ceil(selected * this.props.perPage);
-    //     console.log(offset)
-    //     this.setState({ offset: offset }, () => {
-    //         this.handleSubmit();
-    //     });
-    // };
-
 
 
 
 }
 
 export default App
-// render(<Router></Router>
-//
-//     ,document.getElementById('root'))

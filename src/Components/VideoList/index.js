@@ -1,30 +1,49 @@
 import React from "react";
 import VideoItem from "../VideoItem";
 import PlayerYoutube from "../PlayerYoutube";
-import {
-    BrowserRouter as Router,
-    Route,
-    Link
-} from "react-router-dom";
+import {Route, Link} from "react-router-dom";
 const qs = require('query-string');
 
 
 const VideoList = (props) => {
-    const { videos, handleVideoSelect, isOpenModal,  selectedVideo, search} = props;
+    const { videos, handleVideoSelect, isOpenModal,  selectedVideo, search, isOpenChannel} = props;
     console.log("videolist--", props);
-    const renderedVideos = videos.map((video) => {
-
+    const renderedVideos = videos.map((video, index) => {
+            console.log('video',video);
             if (isOpenModal && video === selectedVideo) {
                 return (
-                    // <PlayerYoutube video={selectedVideo}/>
                     <Route path={`/videolist`} component={PlayerYoutube}/>
                 )
             } else {
-                return (
-                    <Link to={`/videolist?search=${search}&id=${video.id.videoId}`}>
-                        <VideoItem key={video.id.videoId} video={video} handleVideoSelect={handleVideoSelect}/>
-                    </Link>
-                )
+                // if(video.id.kind==="youtube#video"){
+                //     // console.log(video);
+                //     if(isOpenChannel){
+                //         console.log('videoChannel');
+                //         return (
+                //             <Link key={`VideoList_${index}`} to={`/videolist?search=${search}&ChannelId=${video.snippet.channelId}&videoId=${video.id.videoId}`}>
+                //                 <VideoItem key={video.id.videoId} video={video} handleVideoSelect={handleVideoSelect}/>
+                //             </Link>
+                //         )
+                //     }
+                //     else {
+                //         console.log('videoChannelNO');
+                        return (
+                            <Link key={`VideoList_${index}`} to={`/videolist?search=${search}&id=${video.id.videoId}`}>
+                                <VideoItem key={video.id.videoId} video={video} handleVideoSelect={handleVideoSelect}/>
+                            </Link>
+                        )
+                //     }
+                //
+                // }
+                // else{
+                //     //if channel
+                //     console.log('CHANNEL');
+                //     return (
+                //         <Link key={`VideoList_${index}`} to={`/videolist?search=${search}&ChannelId=${video.snippet.channelId}`}>
+                //             <VideoItem key={video.id.videoId} video={video} handleVideoSelect={handleVideoSelect}/>
+                //         </Link>
+                //     )
+                // }
 
             }
         }
@@ -32,14 +51,9 @@ const VideoList = (props) => {
 
     return(
         <div>
-            {/*<Switch>*/}
-                {renderedVideos}
-            {/*</Switch>*/}
+            {renderedVideos}
         </div>
     )
 }
-
-
-
 
 export default VideoList
