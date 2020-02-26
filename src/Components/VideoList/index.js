@@ -10,6 +10,18 @@ const VideoList = (props) => {
     console.log("videolist--", props);
     const renderedVideos = videos.map((video, index) => {
             console.log('video',video);
+
+            let urlq;
+            if(video.id.kind==="youtube#video"){
+                if(isOpenChannel)
+                    urlq = `/videolist?search=${search}&ChannelId=${video.snippet.channelId}&videoId=${video.id.videoId}`;
+                else
+                    urlq = `/videolist?search=${search}&id=${video.id.videoId}`;
+            }
+            else{
+                urlq = `/videolist?search=${search}&ChannelId=${video.snippet.channelId}`;
+            }
+
             if (isOpenModal && video === selectedVideo) {
                 return (
                     <Route path={`/videolist`} component={PlayerYoutube}/>
@@ -28,7 +40,7 @@ const VideoList = (props) => {
                 //     else {
                 //         console.log('videoChannelNO');
                         return (
-                            <Link key={`VideoList_${index}`} to={`/videolist?search=${search}&id=${video.id.videoId}`}>
+                            <Link key={`VideoList_${index}`} to={urlq}>
                                 <VideoItem key={video.id.videoId} video={video} handleVideoSelect={handleVideoSelect}/>
                             </Link>
                         )
