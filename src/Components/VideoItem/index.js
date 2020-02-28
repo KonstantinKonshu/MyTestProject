@@ -3,13 +3,9 @@ import './style.css';
 
 
 const VideoItem = ({video, handleVideoSelect}) => {
-    //console.log('video item')
+
     return(
         <div onClick={ () => {handleVideoSelect(video)}} className='video-item item'>
-            {/*<div className='itemsContainer'>*/}
-            {/*    <img className='ui-image' src={video.snippet.thumbnails.medium.url} alt={video.snippet.description}/>*/}
-            {/*    <div className="play"><img src="https://img.icons8.com/color/48/000000/youtube-play.png"/></div>*/}
-            {/*</div>*/}
 
             <div className='itemsContainer'>
                 <img className='ui-image' src={video.snippet.thumbnails.medium.url} alt={video.snippet.description}/>
@@ -20,8 +16,6 @@ const VideoItem = ({video, handleVideoSelect}) => {
             </div>
         </div>
     )
-
-
-}
+};
 
 export default VideoItem

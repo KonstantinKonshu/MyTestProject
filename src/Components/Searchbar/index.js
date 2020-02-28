@@ -16,7 +16,7 @@ class Searchbar extends Component{
 
     handleChange = (e) => {
         e.preventDefault();
-        console.log('2');
+        console.log('handleChange');
         this.setState({
             term: e.target.value
         })
@@ -28,20 +28,9 @@ class Searchbar extends Component{
     //     this.props.handleFormSubmit(this.state.term);
     // }
     handleSubmit = () => {
-        console.log('1');
+        console.log('handleSubmit Search');
         this.props.handleFormSubmit(this.state.term);
     };
-
-    // renderingSearchStr = () => {
-    //     let qws="";
-    //     if(this.state.term!==this.props.searchStr)
-    //         qws = this.props.searchStr;
-    //         //this.setState({term:this.props.searchStr});
-    //     // if(this.state.term!==this.props.searchStr)
-    //     //     qws =this.props.searchStr;
-    //     // else qws =this.state.term;
-    //     return qws;
-    // };
 
     render() {
         console.log('--', 'searchbar', this.props.searchStr)
@@ -58,18 +47,14 @@ class Searchbar extends Component{
                         </Link>
                         {/*<button onClick={e => this.handleSubmit(e)} className='btn_search'>Search</button>*/}
                         <Link to={`/videolist?search=${this.state.term}`}>
-                            <button id='btn-back' className='btn-back' onClick={this.handleSubmit}>Search</button>
+                            <button id='btn-back' className='btn-back' onClick={this.handleSubmit}>Channel exit</button>
                         </Link>
                         {/*<button  id='btn-back' onClick={e => this.handleSubmit(e)} className='btn-back'>Exit the channel</button>*/}
                     </div>
                 </form>
-
             </div>
-
         )
     }
-
-
 }
 
 export default Searchbar

@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React, {Component, PureComponent} from "react";
 import 'bootstrap/dist/css/bootstrap.css';
 import SearchBar from "../Searchbar";
 import YoutubeAPI from "../YoutubeAPI";
@@ -12,7 +12,7 @@ const KEY = 'AIzaSyAiFx2l1_zXnPOZtJhUriJqg0BDhyWlItQ';
 const history = createBrowserHistory();
 const qs = require('query-string');
 
-class App extends Component{
+class App extends PureComponent{
     constructor(props) {
         super(props);
         this.state = {
@@ -33,20 +33,23 @@ class App extends Component{
     }
 
     handleOnClick = e => {
-        let pol = document.getElementById('pol');
-        if(e.target != pol && e.target.parentNode != pol){
-            this.setState({
-                selectedVideo: null,
-                isOpenModal: null
-            })
-        }
+
+            console.log('AAAAAAA !');
+            let pol = document.getElementById('pol');
+
+            if (e.target != pol && e.target.parentNode != pol) {
+                this.setState({
+                    selectedVideo: null,
+                    isOpenModal: null
+                })
+            }
+
     };
 
     componentDidMount() {
         console.log('componentDidMount');
         const  s = qs.parse(history.location.search);
         console.log(s);
-        //alert(s['id']);
         this.handleSubmit(s['search']);
         // if(s['search'])
         //     this.processingVideoId();
@@ -60,10 +63,11 @@ class App extends Component{
         console.log('history',history);
         //console.log(this.state.search);
         document.addEventListener('mouseup', this.handleOnClick);
-
+        //document.addEventListener('click', this.handleOnClick, false);
     }
 
     componentWillUnmount() {
+        //document.removeEventListener('click', this.handleOnClick, false);
         document.removeEventListener('mouseup', this.handleOnClick);
     }
 
@@ -79,53 +83,11 @@ class App extends Component{
     //     }
     //  };
 
-    handleSubmit = (termFromSearchBar) => {
-        const params = {
-            q: termFromSearchBar,
-            part: 'snippet',
-            key: KEY,
-            maxResults: 10,
-            // kind: "youtube#video"
-        };
-        document.getElementById('btn-back').style.display = 'none';
-        document.getElementById('prev').style.display = 'none';
-        this.setState({
-            search: termFromSearchBar,
-            nameTitle: termFromSearchBar,
-            channelId: null,
-            isOpenChannel:false
-        });
-        YoutubeAPI.get('https://www.googleapis.com/youtube/v3/search', {params})
-            .then(response =>
-                this.setState({
-                    videos: response.data.items,
-                    nextPageToken: response.data.nextPageToken,
-                    prevPageToken: response.data.prevPageToken
-                })
-            )
-            .catch(error => console.log("ERROR", error));
-    };
 
-    clickChannelSelect = (channel) =>{
-        YoutubeAPI.get('https://www.googleapis.com/youtube/v3/search', {
-            params: {
-                channelId: channel.id.channelId,
-                part: 'snippet',
-                key: KEY,
-                maxResults: 10
-            }
-        })
-            .then(response =>
-                this.setState({
-                    videos: response.data.items
-                })
-            )
-            .catch(error => console.log("ERROR", error));
-        document.getElementById('btn-back').style.display = 'initial';
-    };
 
 
     handleVideoSelect = (video) => {
+        console.log('handleVideoSelect');
         if(video.id.kind==="youtube#video"){
             this.setState({
                 selectedVideo: video,
@@ -161,9 +123,6 @@ class App extends Component{
                     <div className='ui grid'>
                         <div className='ui row'>
                             <div>
-                                {/*    <VideoList handleVideoSelect={this.handleVideoSelect} videos={this.state.videos}*/}
-                                {/*               isOpenModal = {this.state.isOpenModal} selectedVideo = {this.state.selectedVideo}*/}
-                                {/*    />*/}
                                 <Route path={`/videolist`}>
                                     <VideoList handleVideoSelect={this.handleVideoSelect} videos={this.state.videos}
                                                isOpenModal = {this.state.isOpenModal} selectedVideo = {this.state.selectedVideo}
@@ -183,7 +142,56 @@ class App extends Component{
         )
     };
 
+
+    handleSubmit = (termFromSearchBar) => {
+        console.log('handleSubmit');
+        const params = {
+            q: termFromSearchBar,
+            part: 'snippet',
+            key: KEY,
+            maxResults: 10
+        };
+        document.getElementById('btn-back').style.display = 'none';
+        document.getElementById('prev').style.display = 'none';
+        this.setState({
+            search: termFromSearchBar,
+            nameTitle: termFromSearchBar,
+            channelId: null,
+            isOpenChannel:false
+        });
+        YoutubeAPI.get('https://www.googleapis.com/youtube/v3/search', {params})
+            .then(response =>
+                this.setState({
+                    videos: response.data.items,
+                    nextPageToken: response.data.nextPageToken,
+                    prevPageToken: response.data.prevPageToken
+                })
+            )
+            .catch(error => console.log("ERROR", error));
+    };
+
+    clickChannelSelect = (channel) =>{
+        console.log('clickChannelSelect');
+        const params = {
+            channelId: channel.id.channelId,
+            part: 'snippet',
+            key: KEY,
+            maxResults: 10
+        };
+        YoutubeAPI.get('https://www.googleapis.com/youtube/v3/search', {params})
+            .then(response =>
+                this.setState({
+                    videos: response.data.items
+                })
+            )
+            .catch(error => console.log("ERROR", error));
+        document.getElementById('btn-back').style.display = 'initial';
+    };
+
+
+
     handleLeafing = (pgToken, indicator) => {
+        console.log('handleLeafing');
         let params = {
             q: this.state.search,
             part: 'snippet',
@@ -209,9 +217,6 @@ class App extends Component{
                 })
             .catch(error => console.log("ERROR", error));
     };
-
-
-
 }
 
 export default App
