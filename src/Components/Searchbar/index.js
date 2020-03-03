@@ -2,6 +2,7 @@ import React, {Component} from "react";
 
 import './style.css';
 import { Link } from "react-router-dom";
+const qs = require('query-string');
 
 
 
@@ -11,11 +12,21 @@ class Searchbar extends Component{
         super(props);
         this.state = {
             term: ""
-        };
+        }
+        // console.log("SB", props);
+        // const st = qs.parse(props.history.location.search);
+
+        console.log("SB", props);
+        const st = qs.parse(props.history.location.search);
+        const searchStr = props.searchStr;
+        // if(props.searchStr=="")
+        //     this.setState({
+        //        term: st["search"]
+        //     });
     }
 
     handleChange = (e) => {
-        e.preventDefault();
+        // e.preventDefault();
         console.log('handleChange');
         this.setState({
             term: e.target.value
@@ -28,22 +39,24 @@ class Searchbar extends Component{
     //     this.props.handleFormSubmit(this.state.term);
     // }
     handleSubmit = () => {
-        console.log('handleSubmit Search');
+        // e.preventDefault();
+        console.log('handleSubmit SearchBAR');
         this.props.handleFormSubmit(this.state.term);
+        document.getElementById("div_btn_control").style.display = 'initial';
     };
 
     render() {
         console.log('--', 'searchbar', this.props.searchStr)
         return(
-            <div className='search-bar ui segment'>
+            <div /*className='search-bar ui segment'*/className="div_search">
                 {/*<form onSubmit={er => this.handleSubmit(er)} className=' ui form'>*/}
-                <form>
-                    <div className='field'>
-                        <label htmlFor='search'>Video Search:</label>
-                        <input onChange={e => this.handleChange(e)} name='search' type='text'
-                               value={this.state.term} placeholder='Enter request'/>
+                <form >
+                    <div /*className='field'*/ >
+                        <img  className="img_search" src="https://icongr.am/clarity/video-gallery.svg?size=30&color=CD0000" />
+                        <input  className="input_search" onChange={e => this.handleChange(e)} name='search' type='text'
+                               /*value={this.state.term}*/ value={this.state.term?this.state.term:this.searchStr} placeholder='Enter request'/>
                         <Link to={`/videolist?search=${this.state.term}`}>
-                            <button className='btn_search' onClick={this.handleSubmit}>Search</button>
+                            <button className='btn_search'  id="btn_s" onClick={this.handleSubmit}>Search</button>
                         </Link>
                         {/*<button onClick={e => this.handleSubmit(e)} className='btn_search'>Search</button>*/}
                         <Link to={`/videolist?search=${this.state.term}`}>

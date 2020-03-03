@@ -1,0 +1,21 @@
+.header_jumbotron{
+    /*min-height: 4em;*/
+    top: 0px;
+    background: palegoldenrod;
+    position: sticky;
+    margin: 1em;
+    z-index: 1;
+}
+
+.header_div{
+    /*position: fixed;*/
+    /*left: 0;*/
+    /*top: 0;*/
+    /*height: 100%;*/
+    /*width: 100%;*/
+}
+
+#div_btn_control{
+    display: initial;
+}
+
