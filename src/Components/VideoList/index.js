@@ -6,7 +6,7 @@ const qs = require('query-string');
 
 
 const VideoList = (props) => {
-    const { videos, handleVideoSelect, selectedVideo, search, isOpenChannel, history} = props;
+    const { videos, handleVideoSelect, selectedVideo, isOpenChannel, history} = props;
     console.log("videolist--", props);
     console.log("videolist-History", history);
 
@@ -17,12 +17,12 @@ const VideoList = (props) => {
               let urlq;
               if(video.id.kind==="youtube#video"){
                   if(isOpenChannel)
-                      urlq = `/videolist?search=${search}&ChannelId=${video.snippet.channelId}&id=${video.id.videoId}`;
+                      urlq = `/current-channel?ChannelId=${video.snippet.channelId}&id=${video.id.videoId}`;
                   else
                       urlq = `/current-video?id=${video.id.videoId}`;
               }
               else
-                  urlq = `/videolist?search=${search}&ChannelId=${video.snippet.channelId}`;
+                  urlq = `/current-channel?ChannelId=${video.snippet.channelId}`;
 
               // if (isOpenModal && video === selectedVideo) {
               //     return (
@@ -30,9 +30,14 @@ const VideoList = (props) => {
               //     )
               // } else {
               return (
-                  <Link key={`VideoList_${index}`} to={urlq}>
-                      <VideoItem key={video.id.videoId} video={video} handleVideoSelect={handleVideoSelect}/>
-                  </Link>
+                  <div>
+                      {/*<div><a href="/current-video">Hmmm...</a></div>*/}
+                       <Link key={`VideoList_${index}`} to={urlq}>
+                          <VideoItem key={`VideoList_${index}`} video={video} handleVideoSelect={handleVideoSelect}/>
+                      </Link>
+                  </div>
+
+
               )
           }
 

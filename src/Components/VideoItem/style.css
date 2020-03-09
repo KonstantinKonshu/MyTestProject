@@ -3,6 +3,7 @@
     align-items: center !important;
     margin-bottom: 1rem;
     margin-top: 1rem;
+    /*border: 1px solid #ddd;*/
 }
 
 .video-item.item img {
