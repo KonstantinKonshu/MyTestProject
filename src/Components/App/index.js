@@ -13,7 +13,7 @@ import "./style.css";
 
 
 
-const KEY = 'AIzaSyA01SERnn1EhrWJd_96D-EbXqW6fI6okMM';
+const KEY = 'AIzaSyAZ31QjjsAGxX9aFERUAdLWwPqDSMaf0Ys';
 const history = createBrowserHistory();
 const qs = require('query-string');
 
@@ -64,8 +64,14 @@ class App extends PureComponent{
         console.log(s);
         if(s['search']!==undefined)
             this.handleSubmit(s['search']);
-        if(s['id']!==undefined)
+        // if(s['id']!==undefined && s['ChannelId']!==undefined)
+        //     this.handleSubmit(s['id']);
+        // else{
+        if(['id']!==undefined)
             this.handleSubmit(s['id']);
+        if(s['ChannelId']!==undefined)
+            this.handleSubmit(s['ChannelId']);
+        // }
         console.log('history', history);
         document.addEventListener('mouseup', this.handleOnClick);
     }
@@ -75,7 +81,7 @@ class App extends PureComponent{
     }
 
     handleVideoSelect = (video) => {
-        console.log('fun handleVideoSelect');
+        console.log('func handleVideoSelect');
         if(video.id.kind==="youtube#video"){
             console.log('click video');
             this.setState({
@@ -93,17 +99,17 @@ class App extends PureComponent{
                 isOpenChannel: true
             });
             console.log(this.state)
-            this.clickChannelSelect(video)
+            this.clickChannelSelect(video.id.channelId)
         }
 
     };
 
 
-    clickChannelSelect = (channel) =>{
+    clickChannelSelect = (channelID) =>{
 
         console.log('clickChannelSelect');
         const params = {
-            channelId: channel.id.channelId,
+            channelId: channelID,
             part: 'snippet',
             key: KEY,
             maxResults: 10
@@ -113,7 +119,7 @@ class App extends PureComponent{
                 this.setState({
                     videos: response.data.items
                 });
-                console.log("channelCL", response )
+                console.log("channelCLICKSELECT", response )
             })
             .catch(error => console.log("ERROR", error));
 
@@ -166,8 +172,10 @@ class App extends PureComponent{
 
                     <div>
                         <Route path='/current-channel'>
-                            <CurrentChannelList
-                                history={history}
+                            <CurrentChannelList history={history} videos={this.state.videos}
+                                                selectedVideo = {this.state.selectedVideo}
+                                                handleVideoSelect={this.handleVideoSelect}
+                                                isOpenChannel={this.state.isOpenChannel}
                             />
                         </Route>
                     </div>
@@ -187,11 +195,9 @@ class App extends PureComponent{
         this.setState({
             search: termFromSearchBar,
             nameTitle: termFromSearchBar,
-            channelId: null,
-            isOpenChannel:false
+            // channelId: null,
+            // isOpenChannel:false
         });
-
-
 
         // if(history.location.pathname==="/videolist" || this.state.checkBtn){
         //     console.log('handleSubmitSEARCH');
@@ -233,65 +239,152 @@ class App extends PureComponent{
         //     }
         // }
 
-
         if(history.location.pathname==="/current-video" && !this.state.checkBtn){
             console.log('handleSubmitCURRENT-Video');
-            console.log('term++ ', termFromSearchBar);
-
-            YoutubeAPI.get(`https://www.googleapis.com/youtube/v3/videos?id=${termFromSearchBar}&key=${KEY}&part=snippet,contentDetails,statistics,status`)
-                .then(response =>{
-                        this.setState({
-                            selectedCV: response.data.items,
-                            selectedVideo: null
-                        })
-                    console.log("handleSubmitCURRENT--requiest", response)
-                }
-
-                )
-                .catch(error => console.log("ERROR", error));
-            // const params = {
-            //     id: termFromSearchBar,
-            //     part: 'id,snippet,contentDetails',
-            //     key: KEY
-            // };
-            // YoutubeAPI.get('https://www.googleapis.com/youtube/v3/videos', {params})
-            //     .then(response =>{
-            //             this.setState({
-            //                 selectedVideo: response.data.items
-            //             })
-            //         console.log("red", response)
-            //     }
-            //
-            //     )
-            //     .catch(error => console.log("ERROR", error));
+            this.submitToCurrentVideo(termFromSearchBar);
         }
         else{
             if(history.location.pathname==="/videolist" || this.state.checkBtn){
                 console.log('handleSubmitSEARCH');
-                const params = {
-                    q: termFromSearchBar,
-                    part: 'snippet',
-                    key: KEY,
-                    maxResults: 10
-                };
-                YoutubeAPI.get('https://www.googleapis.com/youtube/v3/search', {params})
-                    .then(response =>
-                        this.setState({
-                            videos: response.data.items,
-                            nextPageToken: response.data.nextPageToken,
-                            prevPageToken: response.data.prevPageToken
-                        })
-                    )
-                    .catch(error => console.log("ERROR", error));
-                this.setState({
-                    checkBtn:false
-                });
+                // const params = {
+                //     q: termFromSearchBar,
+                //     part: 'snippet',
+                //     key: KEY,
+                //     maxResults: 10
+                // };
+                // YoutubeAPI.get('https://www.googleapis.com/youtube/v3/search', {params})
+                //     .then(response =>
+                //         this.setState({
+                //             videos: response.data.items,
+                //             nextPageToken: response.data.nextPageToken,
+                //             prevPageToken: response.data.prevPageToken
+                //         })
+                //     )
+                //     .catch(error => console.log("ERROR", error));
+                this.submitToVideolist(termFromSearchBar);
+                // this.setState({
+                //     checkBtn:false
+                // });
             }
+            else{
+                if(history.location.pathname==="/current-channel"){
+                    console.log('handleSubmitCURRENT-CHANNEL');
+                    // const params = {
+                    //     id: termFromSearchBar,
+                    //     part: 'snippet',
+                    //     key: KEY
+                    // };
+                    // YoutubeAPI.get('https://www.googleapis.com/youtube/v3/channels', {params})
+                    //     .then(response =>
+                    //         this.setState({
+                    //             channelId: response.data.items
+                    //         })
+                    //     )
+                    //     .catch(error => console.log("ERROR", error));
+                    this.submitToCurrentChannel(termFromSearchBar);
+                    this.clickChannelSelect(termFromSearchBar);
+                    // this.setState({
+                    //     checkBtn:false
+                    // });
+                }
+            }
+            this.setState({
+                checkBtn:false
+            });
         }
 
     };
 
+    submitToCurrentVideo = (term) =>{
+        YoutubeAPI.get(`https://www.googleapis.com/youtube/v3/videos?id=${term}&key=${KEY}&part=snippet,contentDetails,statistics,status`)
+            .then(response =>{
+                this.setState({
+                    selectedCV: response.data.items,
+                    selectedVideo: null
+                });
+                console.log("handleSubmitCURRENT--requiest", response)
+                this.gettingSimilarVideos(response.data.items[0].snippet.title)
+            })
+            .catch(error => console.log("ERROR", error));
+    };
 
+
+    submitToVideolist = (term) =>{
+        const params = {
+            q: term,
+            part: 'snippet',
+            key: KEY,
+            maxResults: 10
+        };
+        YoutubeAPI.get('https://www.googleapis.com/youtube/v3/search', {params})
+            .then(response =>
+                this.setState({
+                    videos: response.data.items,
+                    nextPageToken: response.data.nextPageToken,
+                    prevPageToken: response.data.prevPageToken
+                })
+            )
+            .catch(error => console.log("ERROR", error));
+    };
+
+
+    submitToCurrentChannel = (term) =>{
+        const params = {
+            id: term,
+            part: 'snippet',
+            key: KEY
+        };
+        YoutubeAPI.get('https://www.googleapis.com/youtube/v3/channels', {params})
+            .then(response =>
+                this.setState({
+                    channelId: response.data.items
+                })
+            )
+            .catch(error => console.log("ERROR", error));
+
+    };
+
+    gettingSimilarVideos = (termName) => {
+        const params = {
+            q: termName,
+            part: 'snippet',
+            key: KEY,
+            maxResults: 10
+        };
+        console.log("termName", termName);
+        YoutubeAPI.get('https://www.googleapis.com/youtube/v3/search', {params})
+            .then(response =>
+                this.setState({
+                    videos: response.data.items,
+                    nextPageToken: response.data.nextPageToken,
+                    prevPageToken: response.data.prevPageToken
+                })
+            )
+            .catch(error => console.log("ERROR", error));
+    };
+
+    // handleSubChannel = (videoId, channelId) =>{
+    //     console.log('handleSubmitCURRENT-CHANNEL');
+    //     const params = {
+    //         channelId: channelId,
+    //         part: 'snippet',
+    //         key: KEY,
+    //         maxResults: 10
+    //     };
+    //     YoutubeAPI.get('https://www.googleapis.com/youtube/v3/search', {params})
+    //         .then(response =>{
+    //             this.setState({
+    //                 videos: response.data.items
+    //             });
+    //             console.log("channelCLICKSELECT", response )
+    //         })
+    //         .catch(error => console.log("ERROR", error));
+    //
+    //
+    //
+    //
+    //
+    // };
 
     handleLeafing = (pgToken, indicator) => {
         console.log('handleLeafing');

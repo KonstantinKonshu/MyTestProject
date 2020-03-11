@@ -16,19 +16,15 @@ const VideoList = (props) => {
           }else{
               let urlq;
               if(video.id.kind==="youtube#video"){
-                  if(isOpenChannel)
-                      urlq = `/current-channel?ChannelId=${video.snippet.channelId}&id=${video.id.videoId}`;
-                  else
+                  // if(isOpenChannel)
+                  //     urlq = `/current-channel?ChannelId=${video.snippet.channelId}&id=${video.id.videoId}`;
+                  // else
                       urlq = `/current-video?id=${video.id.videoId}`;
               }
               else
                   urlq = `/current-channel?ChannelId=${video.snippet.channelId}`;
 
-              // if (isOpenModal && video === selectedVideo) {
-              //     return (
-              //         <Route path={`/videolist`} component={PlayerYoutube}/>
-              //     )
-              // } else {
+
               return (
                   <div>
                       {/*<div><a href="/current-video">Hmmm...</a></div>*/}
