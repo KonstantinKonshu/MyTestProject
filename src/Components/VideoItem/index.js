@@ -11,9 +11,13 @@ const VideoItem = ({video, handleVideoSelect}) => {
                 <img className='ui-image' src={video.snippet.thumbnails.medium.url} alt={video.snippet.description}/>
                 <div className="play"><img src="https://img.icons8.com/color/48/000000/youtube-play.png"/></div>
             </div>
-            <div className='content'>
-                <div className='header'>{video.snippet.title}</div>
-            </div>
+            {/*<div className='content'>*/}
+                <div className='content'>
+                    <h6>
+                        {video.snippet.title}
+                    </h6>
+                </div>
+            {/*</div>*/}
         </div>
     )
 };
