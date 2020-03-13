@@ -45,7 +45,7 @@ class Searchbar extends Component{
     // }
     handleSubmit = () => {
         // e.preventDefault();
-        console.log('handleSubmit SearchBAR');
+        console.log('handleSubmit SearchBAR', this.state.term);
         this.props.handleFormSubmit(this.state.term);
         document.getElementById("div_btn_control").style.display = 'initial';
     };

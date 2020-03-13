@@ -9,10 +9,12 @@ import Qwerty from "../qwerty"
 import CurrentVideoList from "../CurrentVideoList";
 import CurrentChannelList from "../CurrentChannelList";
 import "./style.css";
+import { animateScroll as scroll,  scroller } from 'react-scroll';
 
 
 
-const KEY = 'AIzaSyAD4ZUwYz0WNLqyY13sJPmYprBEPJrvlk4';
+
+const KEY = 'AIzaSyAP0_2XnK1EAOrerpCVHhefvb7aTYcRF7A';
 const history = createBrowserHistory();
 const qs = require('query-string');
 
@@ -86,6 +88,7 @@ class App extends PureComponent{
     }
 
     handleVideoSelect = (video) => {
+        scroll.scrollToTop();
         if(video.id.kind==="youtube#video"){
             this.setState({
                 selectedVideo: video,
@@ -99,7 +102,8 @@ class App extends PureComponent{
                 nameTitle: `Channel ${video.snippet.title}`,
                 isOpenChannel: true
             });
-            this.clickChannelSelect(video.id.channelId)
+            this.clickChannelSelect(video.id.channelId);
+            document.getElementById('btn-back').style.display = 'initial';
         }
 
     };
@@ -117,7 +121,9 @@ class App extends PureComponent{
         YoutubeAPI.get('https://www.googleapis.com/youtube/v3/search', {params})
             .then(response =>
                 this.setState({
-                    videos: response.data.items
+                    videos: response.data.items,
+                    nextPageToken: response.data.nextPageToken,
+                    prevPageToken: response.data.prevPageToken
                 })
             )
             .catch(error => console.log("ERROR", error));
@@ -141,6 +147,7 @@ class App extends PureComponent{
             .catch(error => console.log("ERROR", error));
 
         document.getElementById('btn-back').style.display = 'initial';
+        document.getElementById('next').style.display = 'initial';
     };
 
 
@@ -162,6 +169,7 @@ class App extends PureComponent{
                     </div>
 
                     <div className="container">
+
                         {this.state.nameTitle}
                         <div>
                             <Route path={`/videolist`}>
@@ -198,7 +206,7 @@ class App extends PureComponent{
                             />
                         </Route>
                     </div>
-
+                    {/*<li> <a onClick={() => scroll.scrollToTop()}>Scroll To 100!</a></li>*/}
                 </div>
             </Router>
         )
@@ -304,7 +312,7 @@ class App extends PureComponent{
                     // this.setState({
                     //     checkBtn:false
                     // });
-                    document.getElementById('btn-back').style.display = 'initial';
+                    //document.getElementById('btn-back').style.display = 'none';
                 }
             }
             // this.setState({

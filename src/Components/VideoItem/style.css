@@ -9,12 +9,6 @@
 .video-item.item img {
     max-width: 244px;
     max-height: 137px;
-    /*-webkit-transition: all 2s ease;*/
-    /*-moz-transition: all 2s ease;*/
-    /*-ms-transition: all 2s ease;*/
-    /*-o-transition: all 2s ease;*/
-    /*transition: all 2s ease;*/
-    /*cursor: pointer;*/
 }
 
 .itemsContainer:hover  .ui-image{
@@ -40,5 +34,6 @@
 }
 
 .content {
-
+    color: black !important;
+    text-decoration: none
 }

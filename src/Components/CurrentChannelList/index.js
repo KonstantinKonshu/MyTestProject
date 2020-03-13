@@ -9,7 +9,7 @@ const qs = require('query-string');
 const CurrentChannelList = (props) => {
 
     const {history, videos, selectedVideo, handleVideoSelect, isOpenChannel} = props;
-    console.log('CurrentChannel', props);
+    // console.log('CurrentChannel', props);
 
 
     return (

@@ -7,8 +7,8 @@ const qs = require('query-string');
 
 const VideoList = (props) => {
     const { videos, handleVideoSelect, selectedVideo, isOpenChannel, history} = props;
-    console.log("videolist--", props);
-    console.log("videolist-History", history);
+    // console.log("videolist--", props);
+    // console.log("videolist-History", history);
 
     const renderedVideos = videos.map((video, index) => {
           if(video===selectedVideo){
