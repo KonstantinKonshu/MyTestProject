@@ -1,51 +1,65 @@
-import React from "react";
+import React, {Component} from "react";
 import VideoItem from "../VideoItem";
 import PlayerYoutube from "../PlayerYoutube";
 import {Route, Link} from "react-router-dom";
+import {bindActionCreators} from "redux";
+import {getRequest, handleSubmit, handleSelectVideo} from "../../Actions";
+import {connect} from "react-redux";
 const qs = require('query-string');
 
 
-const VideoList = (props) => {
-    const { videos, handleVideoSelect, selectedVideo, isOpenChannel, history} = props;
-    // console.log("videolist--", props);
-    // console.log("videolist-History", history);
+class VideoList extends Component{
 
-    const renderedVideos = videos.map((video, index) => {
-          if(video===selectedVideo){
+    render() {
+        const renderedVideos = this.props.videos.map((video, index) => {
 
-          }else{
-              let urlq;
-              if(video.id.kind==="youtube#video"){
-                  // if(isOpenChannel)
-                  //     urlq = `/current-channel?ChannelId=${video.snippet.channelId}&id=${video.id.videoId}`;
-                  // else
-                      urlq = `/current-video?id=${video.id.videoId}`;
-              }
-              else
-                  urlq = `/current-channel?ChannelId=${video.snippet.channelId}`;
+            if(video==this.props.selectedVideo){
 
-
-              return (
-                  <div>
-                      {/*<div><a href="/current-video">Hmmm...</a></div>*/}
-                       <Link key={`VideoList_${index}`} to={urlq}>
-                          <VideoItem key={`VideoList_${index}`} video={video} handleVideoSelect={handleVideoSelect}/>
-                      </Link>
-                  </div>
+                }else{
+                    let urlq;
+                    if(video.id.kind==="youtube#video"){
+                        // if(isOpenChannel)
+                        //     urlq = `/current-channel?ChannelId=${video.snippet.channelId}&id=${video.id.videoId}`;
+                        // else
+                        urlq = `/current-video?id=${video.id.videoId}`;
+                    }
+                    else
+                        urlq = `/current-channel?ChannelId=${video.snippet.channelId}`;
 
 
-              )
-          }
+                    return (
+                        <div >
+                            <Link key={`VideoList_${index}`} to={urlq}>
+                                <VideoItem onClick={ () => this.props.handleSelectVideo(video)}
+                                           key={`VideoList_${index}`}
+                                           video={video}/>
+                            </Link>
+                        </div>
 
-            // }
-        }
-    );
+                    )
+                }
+            }
+        );
 
-    return(
-        <div>
-            {renderedVideos}
-        </div>
-    )
+        return(
+            <div>
+                {renderedVideos}
+            </div>
+        )
+    }
 }
 
-export default VideoList
+const mapStateToProps = state =>({
+    videos: state.videos.videos,
+    selectedVideo: state.videos.selectedVideo,
+});
+
+const mapDispatchToProps = dispatch =>({
+    handleSelectVideo: bindActionCreators(handleSelectVideo, dispatch)
+});
+
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(VideoList);
