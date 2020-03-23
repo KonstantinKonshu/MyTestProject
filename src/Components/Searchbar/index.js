@@ -3,7 +3,7 @@ import React, {Component} from "react";
 import './style.css';
 import { Link } from "react-router-dom";
 import {bindActionCreators} from "redux";
-import {handleSubmit, getRequest} from "../../Actions";
+import {handleSubmitInit, getRequestSearch} from "../../Actions";
 import {connect} from "react-redux";
 import YoutubeAPI from "../YoutubeAPI";
 const qs = require('query-string');
@@ -56,7 +56,7 @@ class Searchbar extends Component{
             document.getElementById('next').style.display = 'initial';
             console.log('handleSubmitSEARCH');
 
-            this.props.handleSubmit(this.state.term, null, false);
+            this.props.handleSubmitInit(this.state.term, null, false);
 
             const params = {
                 q: this.state.term,
@@ -65,7 +65,7 @@ class Searchbar extends Component{
                 maxResults: 10
             };
             YoutubeAPI.get('https://www.googleapis.com/youtube/v3/search', {params})
-                .then(response => this.props.getRequest(response)
+                .then(response => this.props.getRequestSearch(response)
                 )
                 .catch(error => console.log("ERROR", error));
 
@@ -95,13 +95,13 @@ class Searchbar extends Component{
 }
 
 const mapStateToProps = state =>({
-    nameTitle: state.channels.nameTitle,
+    //nameTitle: state.channels.nameTitle,
     searchRouting: state.routing.locationBeforeTransitions.search,
 });
 
 const mapDispatchToProps = dispatch =>({
-    handleSubmit: bindActionCreators(handleSubmit, dispatch),
-    getRequest: bindActionCreators(getRequest, dispatch),
+    handleSubmitInit: bindActionCreators(handleSubmitInit, dispatch),
+    getRequestSearch: bindActionCreators(getRequestSearch, dispatch),
 
 });
 

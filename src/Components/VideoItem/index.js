@@ -1,10 +1,16 @@
-import React from "react";
+import React, {Component} from "react";
 import './style.css';
+import {handleSelectVideo} from "../../Actions";
 
-const VideoItem = ({video}) => {
 
+
+
+
+
+
+const VideoItem = ({video, handleSelectVideo}) => {
     return(
-        <div /*onClick={ () => this.props.handleSelectVideo(video)}*/ className='video-item item'>
+        <div onClick={ () => handleSelectVideo(video)} className='video-item item'>
 
             <div className={video.id.kind==="youtube#video" && 'itemsContainer'}>
                 <img className='ui-image' src={video.snippet.thumbnails.medium.url} alt={video.snippet.description}/>

@@ -8,15 +8,15 @@ const qs = require('query-string');
 
 const CurrentChannelList = (props) => {
 
-    const {history, videos, selectedVideo, handleVideoSelect, isOpenChannel} = props;
+    //const {history, videos, selectedVideo, handleVideoSelect, isOpenChannel} = props;
     // console.log('CurrentChannel', props);
 
 
     return (
         <div className="container">
             <h1>hello</h1>
-            <VideoList handleVideoSelect={handleVideoSelect} videos={videos}
-                       selectedVideo = {selectedVideo} history={history} isOpenChannel={isOpenChannel}
+            <VideoList //handleVideoSelect={handleVideoSelect} videos={videos}
+                       //selectedVideo = {selectedVideo} history={history} isOpenChannel={isOpenChannel}
             />
         </div>
 

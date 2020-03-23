@@ -6,11 +6,16 @@ const initialState = {
 
 export default function (state =initialState, action){
 
-    // if(action.type==="LOAD_VIDEOS")
-    //     return {
-    //         ...state,
-    //         videos: [...state.videos, action.payload]
-    //     }
-    //пока пусть будет так
-    return state;
+    switch (action.type) {
+        case "GET_REQUEST_SEARCH":
+            console.log("REQ",action.payload)
+            return {
+                ...state,
+                nextPageToken: action.payload.data.nextPageToken,
+                prevPageToken: action.payload.data.prevPageToken
+            }
+
+        default:
+            return state;
+    }
 }

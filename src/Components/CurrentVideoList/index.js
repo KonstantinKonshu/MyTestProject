@@ -24,10 +24,10 @@ class CurrentVideoList extends Component {
         else{
             if(this.props.selectedCV){
                 console.log("22");
-                // identif = selectedCV[0].id;
-                // title = selectedCV[0].snippet.title;
-                // channelTitle = selectedCV[0].snippet.channelTitle;
-                // description = selectedCV[0].snippet.description;
+                identif = this.props.selectedCV[0].id;
+                title = this.props.selectedCV[0].snippet.title;
+                channelTitle = this.props.selectedCV[0].snippet.channelTitle;
+                description = this.props.selectedCV[0].snippet.description;
             }
         }
 
@@ -69,8 +69,6 @@ class CurrentVideoList extends Component {
 const mapStateToProps = state =>({
     selectedVideo: state.videos.selectedVideo,
     selectedCV: state.videos.selectedCV
-    // nameTitle: state.channels.nameTitle,
-    // searchRouting: state.routing.locationBeforeTransitions.search,
 });
 
 const mapDispatchToProps = dispatch =>({

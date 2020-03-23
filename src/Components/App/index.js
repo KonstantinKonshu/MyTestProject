@@ -11,6 +11,8 @@ import CurrentChannelList from "../CurrentChannelList";
 import "./style.css";
 import { animateScroll as scroll,  scroller } from 'react-scroll';
 import {connect} from "react-redux";
+import {bindActionCreators} from "redux";
+import { getRequestSearch, handleSubmitInit, getRequestVideos} from "../../Actions";
 
 
 const KEY = 'AIzaSyCIg-49NReS9Qk-ufTjsb7m7tZ_HnI0qqQ';
@@ -21,24 +23,16 @@ class App extends PureComponent{
     constructor(props) {
         super(props);
         this.state = {
-            //videos: [],
-            nextPageToken: null,
-            prevPageToken: null,
-            //selectedVideo: null,
             pageToken: null,
-            //search: "",
-            //isOpenChannel: false,
-            //nameTitle: "My app",
-            //channelId: null,
             checkBtn: false,
-            //selectedCV: null,
-            bannerChannel: null
+            bannerChannel: null,
+            isOpenChannel: false,
+            nameTitle: "My app",
         };
-       // console.log("props", props);
+
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleVideoSelect = this.handleVideoSelect.bind(this);
         this.handleLeafing = this.handleLeafing.bind(this);
-       // const {history} = props;
     }
 
     handleOnClick = e => {
@@ -104,7 +98,7 @@ class App extends PureComponent{
     clickChannelSelect = (channelID) =>{
 
         console.log('clickChannelSelect', channelID);
-        const params = {
+        let params = {
             channelId: channelID,
             part: 'snippet',
             key: KEY,
@@ -112,29 +106,23 @@ class App extends PureComponent{
         };
         YoutubeAPI.get('https://www.googleapis.com/youtube/v3/search', {params})
             .then(response =>
-                this.setState({
-                    videos: response.data.items,
-                    nextPageToken: response.data.nextPageToken,
-                    prevPageToken: response.data.prevPageToken
-                })
+                this.props.getRequestSearch(response)
             )
             .catch(error => console.log("ERROR", error));
 
 
-        YoutubeAPI.get('https://www.googleapis.com/youtube/v3/channels',{
-            params:{
-                id: channelID,
-                part: 'snippet,brandingSettings',
-                key: KEY
-            }
-            })
+        params = {
+            id: channelID,
+            part: 'snippet,brandingSettings',
+            key: KEY
+        }
+        YoutubeAPI.get('https://www.googleapis.com/youtube/v3/channels',{params})
             .then(response =>{
                 this.setState({
                     bannerChannel: response.data.items[0].brandingSettings.image.bannerImageUrl,
-                    isOpenChannel: true,
-                    checkBtn: false
+                    isOpenChannel: true
                 });
-                console.log('banner', this.state.bannerChannel);
+                //console.log('banner', this.state.bannerChannel);
             })
             .catch(error => console.log("ERROR", error));
 
@@ -151,9 +139,7 @@ class App extends PureComponent{
        return (
             <div>
                 <div className="header_jumbotron">
-                    <SearchBar //handleFormSubmit={this.handleSubmit}
-                               //history={this.props.history}
-                    />
+                    <SearchBar/>
                 </div>
 
                 <div className="bannerChannel">
@@ -161,7 +147,7 @@ class App extends PureComponent{
                 </div>
 
                 <div className="container">
-                    {this.props.nameTitle}
+                    {this.state.nameTitle}
                     <div>
                         <Route path={`/videolist`}>
                             <VideoList />
@@ -197,31 +183,33 @@ class App extends PureComponent{
         document.getElementById('prev').style.display = 'none';
         document.getElementById('next').style.display = 'initial';
 
+        this.props.handleSubmitInit(this.state.term, null, false);
+        let params;
 
-        this.setState({
-            //search: termFromSearchBar,
-            nameTitle: termFromSearchBar,
-            channelId: null,
-            isOpenChannel:false
-        });
-
-        if(this.props.history.location.pathname==="/current-video" && !this.state.checkBtn){
+        if(this.props.routeName==="/current-video" && !this.state.checkBtn){
             console.log('handleSubmitCURRENT-Video');
-            YoutubeAPI.get(`https://www.googleapis.com/youtube/v3/videos?id=${termFromSearchBar}&key=${KEY}&part=snippet,contentDetails,statistics,status`)
+            params = {
+                id: termFromSearchBar,
+                key: KEY,
+                part: 'snippet,contentDetails,statistics,status'
+            }
+            YoutubeAPI.get(`https://www.googleapis.com/youtube/v3/videos`, {params})
                 .then(response =>{
-                    this.setState({
-                        selectedCV: response.data.items,
-                        selectedVideo: null
-                    });
-                    console.log("handleSubmitCURRENT--requiest", response)
+                    this.props.getRequestVideos(response);
+                    // this.setState({
+                    //     selectedCV: response.data.items,
+                    //     selectedVideo: null
+                    // });
+                    //console.log("handleSubmitCURRENT--requiest", response)
+
+                    //запрос на нахождение подобных видео по Title
                     this.gettingSimilarVideos(response.data.items[0].snippet.title)
                 })
                 .catch(error => console.log("ERROR", error));
         }
         else{
-            if(this.props.history.location.pathname==="/videolist" || this.state.checkBtn){
-                console.log('handleSubmitSEARCH');
-                const params = {
+            if(this.props.routeName==="/videolist" || this.state.checkBtn){
+                params = {
                     q: termFromSearchBar,
                     part: 'snippet',
                     key: KEY,
@@ -229,32 +217,18 @@ class App extends PureComponent{
                 };
                 YoutubeAPI.get('https://www.googleapis.com/youtube/v3/search', {params})
                     .then(response =>
-                        this.setState({
-                            videos: response.data.items,
-                            nextPageToken: response.data.nextPageToken,
-                            prevPageToken: response.data.prevPageToken,
-                            checkBtn:false
-                        })
+                        this.props.getRequestSearch(response)
                     )
                     .catch(error => console.log("ERROR", error));
-                // this.submitToVideolist(termFromSearchBar);
-                // this.setState({
-                //     checkBtn:false
-                // });
             }
             else{
-                if(this.props.history.location.pathname==="/current-channel"){
-                    console.log('handleSubmitCURRENT-CHANNEL');
+                if(this.props.routeName==="/current-channel"){
                     this.clickChannelSelect(termFromSearchBar);
-                    // this.setState({
-                    //     checkBtn:false
-                    // });
-                    //document.getElementById('btn-back').style.display = 'none';
                 }
             }
-            // this.setState({
-            //     checkBtn:false
-            // });
+            this.setState({
+                checkBtn:false
+            });
         }
 
     };
@@ -266,17 +240,14 @@ class App extends PureComponent{
             key: KEY,
             maxResults: 10
         };
-        console.log("termName", termName);
         YoutubeAPI.get('https://www.googleapis.com/youtube/v3/search', {params})
             .then(response =>
-                this.setState({
-                    videos: response.data.items,
-                    nextPageToken: response.data.nextPageToken,
-                    prevPageToken: response.data.prevPageToken
-                })
+                    this.props.getRequestSearch(response)
             )
             .catch(error => console.log("ERROR", error));
     };
+
+
 
     handleLeafing = (pgToken, indicator) => {
         console.log('handleLeafing');
@@ -313,14 +284,20 @@ class App extends PureComponent{
 
 
 const mapStateToProps = state =>({
-    isOpenChannel: state.channels.isOpenChannel,
-    nameTitle: state.channels.nameTitle,
     searchRouting: state.routing.locationBeforeTransitions.search,
+    routeName: state.routing.locationBeforeTransitions.pathname,
+});
+const mapDispatchToProps = dispatch =>({
+    handleSubmitInit: bindActionCreators(handleSubmitInit, dispatch),
+    getRequestSearch: bindActionCreators(getRequestSearch, dispatch),
+    getRequestVideos: bindActionCreators(getRequestVideos, dispatch),
+
 });
 
 
 
 
 export default connect(
-    mapStateToProps
+    mapStateToProps,
+    mapDispatchToProps
 )(App);

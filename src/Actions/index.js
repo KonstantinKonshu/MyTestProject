@@ -1,18 +1,30 @@
 
-export const  handleSubmit = (termFromSearchBar, channelId, isOpenChannel) => {
+export const  handleSubmitInit = (termFromSearchBar, channelId) => {
     console.log("termAction",  termFromSearchBar);
     return{
-        type: "HANDLE_SUBMIT",
+        type: "HANDLE_SUBMIT_INIT",
         payload1: termFromSearchBar,
-        payload2: channelId,
-        payload3: isOpenChannel
+        payload2: channelId
     }
 };
 
-export const getRequest = (response) => {
-    //console.log("REQ", response)
+export const getRequestSearch = response => {
     return{
-        type: "GET_REQUEST",
+        type: "GET_REQUEST_SEARCH",
+        payload: response
+    }
+}
+
+export const getRequestVideos = response => {
+    return{
+        type: "GET_REQUEST_VIDEOS",
+        payload: response
+    }
+}
+
+export const getRequestChannels = response =>{
+    return{
+        type: "GET_REQUEST_CHANNELS",
         payload: response
     }
 }

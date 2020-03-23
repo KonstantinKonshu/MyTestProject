@@ -3,7 +3,7 @@ import VideoItem from "../VideoItem";
 import PlayerYoutube from "../PlayerYoutube";
 import {Route, Link} from "react-router-dom";
 import {bindActionCreators} from "redux";
-import {getRequest, handleSubmit, handleSelectVideo} from "../../Actions";
+import {handleSelectVideo} from "../../Actions";
 import {connect} from "react-redux";
 const qs = require('query-string');
 
@@ -30,7 +30,7 @@ class VideoList extends Component{
                     return (
                         <div >
                             <Link key={`VideoList_${index}`} to={urlq}>
-                                <VideoItem onClick={ () => this.props.handleSelectVideo(video)}
+                                <VideoItem handleSelectVideo={this.props.handleSelectVideo}
                                            key={`VideoList_${index}`}
                                            video={video}/>
                             </Link>
