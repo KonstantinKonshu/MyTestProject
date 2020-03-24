@@ -2,7 +2,8 @@ const initialState = {
     videos: [],
     selectedVideo: null,
     //nameTitle: "My app",
-    selectedCV: null
+    selectedCV: null,
+    search: null
 };
 
 
@@ -38,7 +39,8 @@ export  default function (state =initialState, action){
             return {
                 ...state,
                 nameTitle: action.payload1,
-                channelId: action.payload2
+                channelId: action.payload2,
+                search: action.payload1
             };
 
         default:

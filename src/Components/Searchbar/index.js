@@ -8,7 +8,7 @@ import {connect} from "react-redux";
 import YoutubeAPI from "../YoutubeAPI";
 const qs = require('query-string');
 
-const KEY = 'AIzaSyCIg-49NReS9Qk-ufTjsb7m7tZ_HnI0qqQ';
+const KEY = 'AIzaSyABGQc0qbu7bz8uLWkahz8AJYRry0T9ik8';
 
 class Searchbar extends Component{
 

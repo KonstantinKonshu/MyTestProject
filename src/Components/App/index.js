@@ -15,7 +15,7 @@ import {bindActionCreators} from "redux";
 import { getRequestSearch, handleSubmitInit, getRequestVideos} from "../../Actions";
 
 
-const KEY = 'AIzaSyCIg-49NReS9Qk-ufTjsb7m7tZ_HnI0qqQ';
+const KEY = 'AIzaSyABGQc0qbu7bz8uLWkahz8AJYRry0T9ik8';
 //const history = null;//syncHistoryWithStore(browserHistory, store)
 const qs = require('query-string');
 
@@ -23,11 +23,12 @@ class App extends PureComponent{
     constructor(props) {
         super(props);
         this.state = {
-            pageToken: null,
+            //pageToken: null,
             checkBtn: false,
             bannerChannel: null,
             isOpenChannel: false,
             nameTitle: "My app",
+            channelId: null
         };
 
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -154,22 +155,22 @@ class App extends PureComponent{
                         </Route>
                     </div>
 
-                    <div id="div_btn_control">
-                        <button id='prev'  style={{display: 'none'}} onClick={() => this.handleLeafing(this.state.prevPageToken, false)}>Previous</button>
-                        <button id='next' onClick={()=>this.handleLeafing(this.state.nextPageToken, true)}>Next</button>
+                    <div>
+                        <Route path='/current-video'>
+                            <CurrentVideoList/>
+                        </Route>
                     </div>
-                </div>
 
-                <div>
-                    <Route path='/current-video'>
-                        <CurrentVideoList/>
-                    </Route>
-                </div>
+                    <div>
+                        <Route path='/current-channel'>
+                            <CurrentChannelList/>
+                        </Route>
+                    </div>
 
-                <div>
-                    <Route path='/current-channel'>
-                        <CurrentChannelList/>
-                    </Route>
+                    <div id="div_btn_control">
+                        <button id='prev'  style={{display: 'none'}} onClick={() => this.handleLeafing(this.props.prevPageToken, false)}>Previous</button>
+                        <button id='next' onClick={()=>this.handleLeafing(this.props.nextPageToken, true)}>Next</button>
+                    </div>
                 </div>
 
             </div>
@@ -250,9 +251,9 @@ class App extends PureComponent{
 
 
     handleLeafing = (pgToken, indicator) => {
-        console.log('handleLeafing');
+        console.log('handleLeafing ', pgToken);
         let params = {
-            q: this.state.search,
+            q: this.props.searchName,
             part: 'snippet',
             key: KEY,
             maxResults: 10,
@@ -266,15 +267,11 @@ class App extends PureComponent{
         }
         YoutubeAPI.get('https://www.googleapis.com/youtube/v3/search', {params})
             .then(response => {
-                this.setState({
-                    videos: response.data.items,
-                    nextPageToken: response.data.nextPageToken,
-                    prevPageToken: response.data.prevPageToken
-                });
-                console.log(response.data.prevPageToken);
+                this.props.getRequestSearch(response);
+                // console.log(response.data.prevPageToken);
                 if (response.data.prevPageToken === undefined)
                     document.getElementById('prev').style.display = 'none';
-                })
+            })
             .catch(error => console.log("ERROR", error));
     };
 }
@@ -286,6 +283,9 @@ class App extends PureComponent{
 const mapStateToProps = state =>({
     searchRouting: state.routing.locationBeforeTransitions.search,
     routeName: state.routing.locationBeforeTransitions.pathname,
+    searchName: state.videos.search,
+    prevPageToken: state.tokens.prevPageToken,
+    nextPageToken: state.tokens.nextPageToken,
 });
 const mapDispatchToProps = dispatch =>({
     handleSubmitInit: bindActionCreators(handleSubmitInit, dispatch),

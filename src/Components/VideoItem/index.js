@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import './style.css';
-import {handleSelectVideo} from "../../Actions";
+import {animateScroll as scroll} from "react-scroll";
 
 
 
@@ -9,8 +9,12 @@ import {handleSelectVideo} from "../../Actions";
 
 
 const VideoItem = ({video, handleSelectVideo}) => {
+    const clickItem = (video) =>{
+        scroll.scrollToTop();
+        handleSelectVideo(video);
+    }
     return(
-        <div onClick={ () => handleSelectVideo(video)} className='video-item item'>
+        <div onClick={()=>clickItem(video)} className='video-item item'>
 
             <div className={video.id.kind==="youtube#video" && 'itemsContainer'}>
                 <img className='ui-image' src={video.snippet.thumbnails.medium.url} alt={video.snippet.description}/>
