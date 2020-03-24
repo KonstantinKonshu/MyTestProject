@@ -6,9 +6,11 @@ import {bindActionCreators} from "redux";
 import {handleSubmitInit, getRequestSearch} from "../../Actions";
 import {connect} from "react-redux";
 import YoutubeAPI from "../YoutubeAPI";
+import {KEY} from "../../Constants";
+
 const qs = require('query-string');
 
-const KEY = 'AIzaSyABGQc0qbu7bz8uLWkahz8AJYRry0T9ik8';
+//const KEY = 'AIzaSyABGQc0qbu7bz8uLWkahz8AJYRry0T9ik8';
 
 class Searchbar extends Component{
 

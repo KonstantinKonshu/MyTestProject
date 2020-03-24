@@ -38,26 +38,12 @@ export  default function (state =initialState, action){
         case "HANDLE_SUBMIT_INIT":
             return {
                 ...state,
-                nameTitle: action.payload1,
-                channelId: action.payload2,
+                //nameTitle: action.payload1,
+                //channelId: action.payload2,
                 search: action.payload1
             };
 
         default:
             return state;
     }
-    // if(action.type === "LOAD_VIDEOS")
-    //     return {
-    //         ...state,
-    //         videos: [...state.videos, action.payload]
-    //     }
-    // if(action.type === "MOD_CHECK_BTN")
-    //     return {
-    //         ...state,
-    //         checkBtn: true
-    //     }
-    // if(action.type === "VIDEO_SELECTED")
-    //     return action.payload;
-    // //пока пусть будет так
-    // return state;
 }

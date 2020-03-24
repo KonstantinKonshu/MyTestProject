@@ -22,19 +22,29 @@ export const getRequestVideos = response => {
     }
 }
 
-export const getRequestChannels = response =>{
+export const getRequestChannels = (bannerChannel, isOpenChannel) =>{
     return{
         type: "GET_REQUEST_CHANNELS",
-        payload: response
+        payload1: bannerChannel,
+        payload2: isOpenChannel
     }
 }
 
-export const handleSelectVideo = (videoSelect) => {
+export const handleSelectVideo = videoSelect => {
     console.log("handleSelectVideo_ACTIONS");
     return{
         type: "SELECT_VIDEO",
         payload: videoSelect
     }
+}
+
+export const handleClickChannel = (channelId, isOpenChannel) =>{
+    return{
+        type: "SELECT_CHANNEL",
+        payload1: channelId,
+        payload2: isOpenChannel
+    }
+
 }
 
 
