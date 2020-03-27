@@ -10,8 +10,6 @@ import {KEY} from "../../Constants";
 
 const qs = require('query-string');
 
-//const KEY = 'AIzaSyABGQc0qbu7bz8uLWkahz8AJYRry0T9ik8';
-
 class Searchbar extends Component{
 
     constructor(props) {
@@ -30,19 +28,11 @@ class Searchbar extends Component{
         })
     };
 
-
-
-    // handleSubmit = () => {
-    //     // e.preventDefault();
-    //     console.log('handleSubmit SearchBAR', this.state.term);
-    //     this.props.handleFormSubmit(this.state.term);
-    //     document.getElementById("div_btn_control").style.display = 'initial';
-    // };
-
-
     componentDidMount() {
+
+        console.log('componentDidMount_SB');
         const st = qs.parse(this.props.searchRouting);
-        // this.searchStr = st["search"];
+
         if(st["search"]!==undefined){
             this.setState({
                 term: st["search"]
@@ -53,12 +43,7 @@ class Searchbar extends Component{
 
     render() {
         const tmp =  () => {
-            document.getElementById('btn-back').style.display = 'none';
-            document.getElementById('prev').style.display = 'none';
-            document.getElementById('next').style.display = 'initial';
-            console.log('handleSubmitSEARCH');
-
-            this.props.handleSubmitInit(this.state.term, null, false);
+            this.props.handleSubmitInit(this.state.term, null, null);
 
             const params = {
                 q: this.state.term,
@@ -67,13 +52,18 @@ class Searchbar extends Component{
                 maxResults: 10
             };
             YoutubeAPI.get('https://www.googleapis.com/youtube/v3/search', {params})
-                .then(response => this.props.getRequestSearch(response)
+                .then(response => {
+                        const receivedData = response.data;
+                        this.props.getRequestSearch(receivedData);
+                    }
                 )
                 .catch(error => console.log("ERROR", error));
 
+            document.getElementById('btn-back').style.display = 'none';
+            document.getElementById('prev').style.display = 'none';
+            document.getElementById('next').style.display = 'initial';
         }
 
-        //console.log('--', 'searchbar', this.searchStr)
         return(
             <div className="div_search">
                 <form >
@@ -86,9 +76,8 @@ class Searchbar extends Component{
                         {/*</Link>*/}
                         {/*/!*<button onClick={e => this.handleSubmit(e)} className='btn_search'>Search</button>*!/*/}
                         {/*<Link to={`/videolist?search=${this.state.term}`}>*/}
-                            <button id='btn-back' className='btn-back' onClick={() => this.props.handleSubmit(this.state.term)}>Channel exit</button>
+                            <button id='btn-back' className='btn-back' onClick={tmp}>Channel exit</button>
                         </Link>
-                        {/*<button  id='btn-back' onClick={e => this.handleSubmit(e)} className='btn-back'>Exit the channel</button>*/}
                     </div>
                 </form>
             </div>
@@ -97,7 +86,6 @@ class Searchbar extends Component{
 }
 
 const mapStateToProps = state =>({
-    //nameTitle: state.channels.nameTitle,
     searchRouting: state.routing.locationBeforeTransitions.search,
 });
 

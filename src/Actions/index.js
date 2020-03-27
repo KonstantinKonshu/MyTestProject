@@ -1,50 +1,49 @@
 
-export const  handleSubmitInit = (termFromSearchBar, channelId) => {
+export const  handleSubmitInit = (termFromSearchBar, channelId, bannerChannel) => {
     console.log("termAction",  termFromSearchBar);
     return{
         type: "HANDLE_SUBMIT_INIT",
         payload1: termFromSearchBar,
-        payload2: channelId
+        payload2: channelId,
+        payload3: bannerChannel
     }
 };
 
-export const getRequestSearch = response => {
+export const getRequestSearch = data => {
     return{
         type: "GET_REQUEST_SEARCH",
-        payload: response
+        payload: data
     }
 }
 
-export const getRequestVideos = response => {
+// export const getRequestVideos = response => {
+//     return{
+//         type: "GET_REQUEST_VIDEOS",
+//         payload: response
+//     }
+// }
+
+export const getBannerChannels = bannerChannel =>{
     return{
-        type: "GET_REQUEST_VIDEOS",
-        payload: response
+        type: "GET_BANNER_CHANNELS",
+        payload: bannerChannel
     }
 }
 
-export const getRequestChannels = (bannerChannel, isOpenChannel) =>{
+export const handleClickVideo = videoSelect => {
+   // console.log("handleSelectVideo_ACTIONS");
     return{
-        type: "GET_REQUEST_CHANNELS",
-        payload1: bannerChannel,
-        payload2: isOpenChannel
-    }
-}
-
-export const handleSelectVideo = videoSelect => {
-    console.log("handleSelectVideo_ACTIONS");
-    return{
-        type: "SELECT_VIDEO",
+        type: "SET_SELECT_VIDEO",
         payload: videoSelect
+
     }
 }
 
-export const handleClickChannel = (channelId, isOpenChannel) =>{
+export const handleClickChannel = channel =>{
     return{
         type: "SELECT_CHANNEL",
-        payload1: channelId,
-        payload2: isOpenChannel
+        payload: channel
     }
-
 }
 
 

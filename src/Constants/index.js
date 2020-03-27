@@ -1,5 +1,5 @@
 
 
-export const KEY = "AIzaSyABGQc0qbu7bz8uLWkahz8AJYRry0T9ik8";
+export const KEY = "AIzaSyBP19qfjTwchTHfVDTHWkg1WLBF7KSScvk";
 
 //скоро добавлю еще констант

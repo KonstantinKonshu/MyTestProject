@@ -1,9 +1,6 @@
 import React, {Component} from "react";
 import VideoItem from "../VideoItem";
-import PlayerYoutube from "../PlayerYoutube";
-import {Route, Link} from "react-router-dom";
-import {bindActionCreators} from "redux";
-//import {handleSelectVideo} from "../../Actions";
+import { Link } from "react-router-dom";
 import {connect} from "react-redux";
 const qs = require('query-string');
 
@@ -13,36 +10,26 @@ class VideoList extends Component{
     render() {
         const renderedVideos = this.props.videos.map((video, index) => {
 
-            if(video==this.props.selectedVideo){
-
-                }else{
+                if(video!==this.props.selectedVideo){
                     let urlq;
-                    if(video.id.kind==="youtube#video"){
-                        // if(isOpenChannel)
-                        //     urlq = `/current-channel?ChannelId=${video.snippet.channelId}&id=${video.id.videoId}`;
-                        // else
+                    if(video.id.kind==="youtube#video")
                         urlq = `/current-video?id=${video.id.videoId}`;
-                    }
                     else
                         urlq = `/current-channel?ChannelId=${video.snippet.channelId}`;
 
-
                     return (
-                        <div >
+                        <div>
                             <Link key={`VideoList_${index}`} to={urlq}>
-                                <VideoItem //handleSelectVideo={this.props.handleSelectVideo}
-                                           key={`VideoList_${index}`}
-                                           video={video}/>
+                                <VideoItem key={`VideoList_${index}`} video={video}/>
                             </Link>
                         </div>
-
                     )
                 }
             }
         );
 
         return(
-            <div>
+            <div className="container">
                 {renderedVideos}
             </div>
         )
@@ -54,12 +41,8 @@ const mapStateToProps = state =>({
     selectedVideo: state.videos.selectedVideo,
 });
 
-const mapDispatchToProps = dispatch =>({
-    //handleSelectVideo: bindActionCreators(handleSelectVideo, dispatch)
-});
 
 
 export default connect(
-    mapStateToProps,
-    mapDispatchToProps
+    mapStateToProps
 )(VideoList);

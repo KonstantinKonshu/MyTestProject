@@ -1,25 +1,24 @@
 import React from "react";
+import {useSelector} from "react-redux";
 import VideoList from "../VideoList";
-import CurrentVideoList from "../CurrentVideoList";
-import {Route} from "react-router-dom";
-// import PlayerYoutube from "../PlayerYoutube";
-// import VideoList from "../VideoList";
+import "./style.css";
+import channels from "../../Reducers/channels";
+
 const qs = require('query-string');
 
-const CurrentChannelList = (props) => {
+const CurrentChannelList = () => {
 
-    //const {history, videos, selectedVideo, handleVideoSelect, isOpenChannel} = props;
-    // console.log('CurrentChannel', props);
-
-
+    const banner = useSelector(state => state.channels.bannerChannel);
+    console.log('bannerCurrentChannelList', banner);
     return (
-        <div className="container">
-            <h1>hello</h1>
-            <VideoList //handleVideoSelect={handleVideoSelect} videos={videos}
-                       //selectedVideo = {selectedVideo} history={history} isOpenChannel={isOpenChannel}
-            />
-        </div>
+        <div>
 
+            <div className="bannerChannel">
+                <img className="img_banner" src={banner} alt=""/>
+            </div>
+
+            <VideoList/>
+        </div>
     )
 };
 

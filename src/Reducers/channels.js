@@ -1,5 +1,4 @@
 const initialState = {
-    isOpenChannel: false,
     channelId: null,
     bannerChannel: null
 }
@@ -9,24 +8,20 @@ export default function (state =initialState, action){
 
     switch (action.type) {
         case "SELECT_CHANNEL":
-            //console.log("REQ",action.payload)
             return {
                 ...state,
-                channelId: action.payload1,
-                isOpenChannel: action.payload2
+                channelId: action.payload.snippet.channelId
             }
         case "HANDLE_SUBMIT_INIT":
             return {
                 ...state,
-                //nameTitle: action.payload1,
                 channelId: action.payload2,
-                //search: action.payload1
+                bannerChannel: action.payload3
             };
-        case "GET_REQUEST_CHANNELS":
+        case "GET_BANNER_CHANNELS":
             return {
                 ...state,
-                bannerChannel: action.payload1,
-                isOpenChannel: action.payload2
+                bannerChannel: action.payload
             }
 
         default:

@@ -11,8 +11,8 @@ export default function (state =initialState, action){
             console.log("REQ",action.payload)
             return {
                 ...state,
-                nextPageToken: action.payload.data.nextPageToken,
-                prevPageToken: action.payload.data.prevPageToken
+                nextPageToken: action.payload.nextPageToken,
+                prevPageToken: action.payload.prevPageToken
             }
 
         default:
