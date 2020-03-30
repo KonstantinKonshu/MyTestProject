@@ -12,7 +12,6 @@ const CurrentChannelList = () => {
     console.log('bannerCurrentChannelList', banner);
     return (
         <div>
-
             <div className="bannerChannel">
                 <img className="img_banner" src={banner} alt=""/>
             </div>

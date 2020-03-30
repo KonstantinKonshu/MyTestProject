@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 import {connect} from "react-redux";
 const qs = require('query-string');
 
-
 class VideoList extends Component{
 
     render() {

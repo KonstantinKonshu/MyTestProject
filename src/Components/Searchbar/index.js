@@ -29,7 +29,6 @@ class Searchbar extends Component{
     };
 
     componentDidMount() {
-
         console.log('componentDidMount_SB');
         const st = qs.parse(this.props.searchRouting);
 
@@ -42,7 +41,7 @@ class Searchbar extends Component{
 
 
     render() {
-        const tmp =  () => {
+        const clickSubmit =  () => {
             this.props.handleSubmitInit(this.state.term, null, null);
 
             const params = {
@@ -72,11 +71,11 @@ class Searchbar extends Component{
                         <input  className="input_search" onChange={e => this.handleChange(e)} name='search' type='text'
                                value={this.state.term} placeholder='Enter request'/>
                         <Link to={`/videolist?search=${this.state.term}`}>
-                            <button className='btn_search'  id="btn_s" onClick={tmp}>Search</button>
+                            <button className='btn_search' onClick={clickSubmit}>Search</button>
                         {/*</Link>*/}
                         {/*/!*<button onClick={e => this.handleSubmit(e)} className='btn_search'>Search</button>*!/*/}
                         {/*<Link to={`/videolist?search=${this.state.term}`}>*/}
-                            <button id='btn-back' className='btn-back' onClick={tmp}>Channel exit</button>
+                            <button id='btn-back' className='btn-back' onClick={clickSubmit}>Channel exit</button>
                         </Link>
                     </div>
                 </form>

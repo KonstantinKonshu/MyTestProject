@@ -18,23 +18,11 @@ const qs = require('query-string');
 class App extends PureComponent{
     constructor(props) {
         super(props);
-        this.state = {
-            checkBtn: false
-        };
 
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleLeafing = this.handleLeafing.bind(this);
     }
 
-    // handleOnClick = e => {
-    //     console.log('handleOnClick');
-    //     let btn_s = document.getElementById('btn_s');
-    //     if (e.target == btn_s || e.target.parentNode == btn_s) {
-    //         this.setState({
-    //             checkBtn: true
-    //         })
-    //     }
-    // };
 
     componentDidMount() {
         console.log('componentDidMount_APP');
@@ -48,9 +36,10 @@ class App extends PureComponent{
             else
                 if(s['id']!==undefined)
                     this.handleSubmit(s['id']);
-                
-    }
 
+
+    }
+    
     clickChannelSelect = (channelID) =>{
 
         let params = {
@@ -78,10 +67,6 @@ class App extends PureComponent{
         document.getElementById('next').style.display = 'initial';
     };
 
-
-
-
-
     render() {
        return (
             <div>
@@ -108,16 +93,16 @@ class App extends PureComponent{
                             <CurrentChannelList/>
                         </Route>
                     </div>
-
-                <div className="container">
-                    <div id="div_btn_control">
-                        <button id='prev'  style={{display: 'none'}} onClick={() => this.handleLeafing(this.props.prevPageToken, false)}>Previous</button>
-                        <button id='next' style={{display: 'none'}} onClick={()=>this.handleLeafing(this.props.nextPageToken, true)}>Next</button>
+                   <div className="div_btn_control">
+                        <button id='prev' onClick={() => this.handleLeafing(this.props.prevPageToken, false)}>
+                            <img src="https://icongr.am/fontawesome/angle-double-left.svg?size=28&color=000000"/>
+                            <h6>Previous</h6>
+                        </button>
+                        <button id='next' onClick={()=>this.handleLeafing(this.props.nextPageToken, true)}>
+                            <h6>Next</h6>
+                            <img src="https://icongr.am/fontawesome/angle-double-right.svg?size=28&color=000000"/>
+                        </button>
                     </div>
-                </div>
-
-
-
             </div>
         )
     };
@@ -158,7 +143,7 @@ class App extends PureComponent{
             else
                 if(this.props.routeName==="/current-channel")
                     this.clickChannelSelect(termFromSearchBar);
-
+            
         }
 
         document.getElementById('btn-back').style.display = 'none';

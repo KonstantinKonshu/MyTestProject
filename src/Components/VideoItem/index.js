@@ -43,11 +43,6 @@ const VideoItem = ({video}) => {
                 .then(response =>{
                     const bannerUrl  = response.data.items[0].brandingSettings.image.bannerImageUrl;
                     dispatch(getBannerChannels(bannerUrl));
-                    // this.setState({
-                    //     bannerChannel: response.data.items[0].brandingSettings.image.bannerImageUrl,
-                    //     isOpenChannel: true,
-                    //     checkBtn: false
-                    // });
                 })
                 .catch(error => console.log("ERROR", error));
 
