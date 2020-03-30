@@ -1,3 +1,5 @@
+import {types} from "../Constants";
+
 const initialState = {
     nextPageToken: null,
     prevPageToken: null,
@@ -7,7 +9,7 @@ const initialState = {
 export default function (state =initialState, action){
 
     switch (action.type) {
-        case "GET_REQUEST_SEARCH":
+        case types.get.GET_REQUEST_SEARCH:
             console.log("REQ",action.payload)
             return {
                 ...state,

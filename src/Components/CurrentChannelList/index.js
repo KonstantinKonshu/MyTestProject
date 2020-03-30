@@ -2,9 +2,7 @@ import React from "react";
 import {useSelector} from "react-redux";
 import VideoList from "../VideoList";
 import "./style.css";
-import channels from "../../Reducers/channels";
 
-const qs = require('query-string');
 
 const CurrentChannelList = () => {
 

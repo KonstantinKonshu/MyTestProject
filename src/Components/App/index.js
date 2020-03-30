@@ -113,12 +113,10 @@ class App extends PureComponent{
 
     handleSubmit = (termFromSearchBar) => {
 
-        console.log('SUBMIT');
         this.props.handleSubmitInit(termFromSearchBar, null);
         let params;
 
         if(this.props.routeName==="/current-video"){
-            console.log('handleSubmitCURRENT-Video');
             params = {
                 id: termFromSearchBar,
                 key: KEY,
@@ -170,7 +168,6 @@ class App extends PureComponent{
 
 
     handleLeafing = (pgToken, indicator) => {
-        console.log('handleLeafing ', pgToken);
         let params = {
             q: this.props.searchName,
             part: 'snippet',

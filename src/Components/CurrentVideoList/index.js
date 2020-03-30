@@ -3,7 +3,6 @@ import PlayerYoutube from "../PlayerYoutube";
 import VideoList from "../VideoList";
 import "./style.css";
 import {useSelector} from "react-redux";
-const qs = require('query-string');
 
 
 

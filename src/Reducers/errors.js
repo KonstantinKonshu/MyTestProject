@@ -1,4 +1,4 @@
-
+import {types} from "../Constants";
 const initialState = {
     handleError: null
 }
@@ -6,12 +6,12 @@ const initialState = {
 
 export default function (state =initialState, action){
     switch (action.type) {
-        case "SET_ERROR":
+        case types.set.SET_ERROR:
             return {
                 ...state,
                 handleError: action.payload
             }
-        case "HANDLE_SUBMIT_INIT":
+        case types.HANDLE_SUBMIT_INIT:
             return {
                 ...state,
                 handleError: action.payload3
