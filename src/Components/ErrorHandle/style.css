@@ -1,0 +1,8 @@
+.error-content{
+    position : absolute;
+    justify-content: center;
+    align-items: center;
+    top:calc(50% - 24px);
+    left: calc(50% - 24px);
+}
+

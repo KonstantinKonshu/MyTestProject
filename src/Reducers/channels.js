@@ -16,7 +16,7 @@ export default function (state =initialState, action){
             return {
                 ...state,
                 channelId: action.payload2,
-                bannerChannel: action.payload3
+                bannerChannel: action.payload2
             };
         case "GET_BANNER_CHANNELS":
             return {

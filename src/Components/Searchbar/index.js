@@ -3,7 +3,7 @@ import React, {Component} from "react";
 import './style.css';
 import { Link } from "react-router-dom";
 import {bindActionCreators} from "redux";
-import {handleSubmitInit, getRequestSearch} from "../../Actions";
+import {handleSubmitInit, getRequestSearch, setError} from "../../Actions";
 import {connect} from "react-redux";
 import YoutubeAPI from "../YoutubeAPI";
 import {KEY} from "../../Constants";
@@ -42,7 +42,7 @@ class Searchbar extends Component{
 
     render() {
         const clickSubmit =  () => {
-            this.props.handleSubmitInit(this.state.term, null, null);
+            this.props.handleSubmitInit(this.state.term, null);
 
             const params = {
                 q: this.state.term,
@@ -56,7 +56,10 @@ class Searchbar extends Component{
                         this.props.getRequestSearch(receivedData);
                     }
                 )
-                .catch(error => console.log("ERROR", error));
+                .catch(error => {
+                    console.log("ERROR", error);
+                    this.props.setError(true);
+                });
 
             document.getElementById('btn-back').style.display = 'none';
             document.getElementById('prev').style.display = 'none';
@@ -91,6 +94,7 @@ const mapStateToProps = state =>({
 const mapDispatchToProps = dispatch =>({
     handleSubmitInit: bindActionCreators(handleSubmitInit, dispatch),
     getRequestSearch: bindActionCreators(getRequestSearch, dispatch),
+    setError: bindActionCreators(setError, dispatch)
 
 });
 

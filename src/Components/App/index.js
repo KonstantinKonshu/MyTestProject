@@ -9,7 +9,7 @@ import CurrentChannelList from "../CurrentChannelList";
 import "./style.css";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
-import { getRequestSearch, handleSubmitInit, handleClickVideo,getBannerChannels} from "../../Actions";
+import { getRequestSearch, handleSubmitInit, handleClickVideo,getBannerChannels, setError} from "../../Actions";
 import {KEY} from "../../Constants";
 
 
@@ -61,7 +61,10 @@ class App extends PureComponent{
                     this.props.getBannerChannels(bannerUrl);
                 }
             )
-            .catch(error => console.log("ERROR", error));
+            .catch(error => {
+                console.log("ERROR", error);
+                this.props.setError(true);
+            });
 
         document.getElementById('btn-back').style.display = 'initial';
         document.getElementById('next').style.display = 'initial';
@@ -111,7 +114,7 @@ class App extends PureComponent{
     handleSubmit = (termFromSearchBar) => {
 
         console.log('SUBMIT');
-        this.props.handleSubmitInit(termFromSearchBar, null, null);
+        this.props.handleSubmitInit(termFromSearchBar, null);
         let params;
 
         if(this.props.routeName==="/current-video"){
@@ -128,7 +131,10 @@ class App extends PureComponent{
                     //запрос на нахождение подобных видео по Title
                     this.gettingSimilarVideos(response.data.items[0].snippet.title)
                 })
-                .catch(error => console.log("ERROR", error));
+                .catch(error => {
+                    console.log("ERROR", error);
+                    this.props.setError(true);
+                });
         }
         else{
             if(this.props.routeName==="/videolist"){
@@ -194,7 +200,10 @@ class App extends PureComponent{
                         document.getElementById('prev').style.display = 'none';
                 }
             )
-            .catch(error => console.log("ERROR", error));
+            .catch(error => {
+                console.log("ERROR", error);
+                this.props.setError(true);
+            });
     }
 }
 
@@ -215,6 +224,8 @@ const mapDispatchToProps = dispatch =>({
     getRequestSearch: bindActionCreators(getRequestSearch, dispatch),
     handleClickVideo: bindActionCreators(handleClickVideo, dispatch),
     getBannerChannels:bindActionCreators(getBannerChannels, dispatch),
+    setError: bindActionCreators(setError, dispatch)
+
 
 });
 

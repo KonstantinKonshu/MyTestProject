@@ -1,11 +1,11 @@
 
-export const  handleSubmitInit = (termFromSearchBar, channelId, bannerChannel) => {
+export const  handleSubmitInit = (termFromSearchBar, initialItem) => {
     console.log("termAction",  termFromSearchBar);
     return{
         type: "HANDLE_SUBMIT_INIT",
         payload1: termFromSearchBar,
-        payload2: channelId,
-        payload3: bannerChannel
+        payload2: initialItem,
+        payload3: false
     }
 };
 
@@ -15,13 +15,6 @@ export const getRequestSearch = data => {
         payload: data
     }
 }
-
-// export const getRequestVideos = response => {
-//     return{
-//         type: "GET_REQUEST_VIDEOS",
-//         payload: response
-//     }
-// }
 
 export const getBannerChannels = bannerChannel =>{
     return{
@@ -46,4 +39,10 @@ export const handleClickChannel = channel =>{
     }
 }
 
+export const setError = error => {
+    return{
+        type: "SET_ERROR",
+        payload: error
+    }
+}
 

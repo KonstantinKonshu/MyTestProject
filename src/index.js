@@ -12,17 +12,34 @@ import {BrowserRouter as Router, Route} from "react-router-dom";
 import { browserHistory} from "react-router";
 import { syncHistoryWithStore } from "react-router-redux";
 
+import ErrorHandle from "./Components/ErrorHandle";
+
+import {useSelector} from "react-redux";
 
 // const browserHistory = createBrowserHistory();
 const store = createStore(reducers, composeWithDevTools());
 const history = syncHistoryWithStore(browserHistory, store);
-console.log('historyINDEX', history);
+
+const StartPage = () =>{
+    const handleError = useSelector(state => state.errors.handleError);
+    if(handleError)
+        return(
+            <ErrorHandle/>
+        )
+    else
+        return(
+            <Route path="/" component={App} />
+        )
+
+}
+
 
 render(
     <Provider store={store}>
         <Router history={history}>
             <div>
-                <Route path="/" component={App} />
+                <StartPage/>
+                {/*<Route path="/" component={App} />*/}
             </div>
         </Router>
     </Provider>

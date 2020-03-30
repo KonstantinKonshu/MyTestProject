@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import './style.css';
 import {animateScroll as scroll} from "react-scroll";
 import {connect, useDispatch} from "react-redux";
-import {handleClickVideo, handleClickChannel, getRequestSearch, getBannerChannels} from "../../Actions";
+import {handleClickVideo, handleClickChannel, getRequestSearch, getBannerChannels, setError} from "../../Actions";
 import YoutubeAPI from "../YoutubeAPI";
 import {KEY} from "../../Constants";
 
@@ -32,7 +32,10 @@ const VideoItem = ({video}) => {
                         dispatch(getRequestSearch(receivedData));
                     }
                 )
-                .catch(error => console.log("ERROR", error));
+                .catch(error => {
+                    console.log("ERROR", error);
+                    dispatch(setError(true));
+                });
 
             params ={
                 id: video.id.channelId,
@@ -44,7 +47,10 @@ const VideoItem = ({video}) => {
                     const bannerUrl  = response.data.items[0].brandingSettings.image.bannerImageUrl;
                     dispatch(getBannerChannels(bannerUrl));
                 })
-                .catch(error => console.log("ERROR", error));
+                .catch(error => {
+                    console.log("ERROR", error);
+                    dispatch(setError(true));
+                });
 
             document.getElementById('next').style.display = 'initial';
             document.getElementById('btn-back').style.display = 'initial';
