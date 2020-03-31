@@ -1,14 +1,8 @@
-.header_jumbotron{
-    /*min-height: 4em;*/
-    top: 0px;
-    background: palegoldenrod;
-    position: sticky;
-    margin: 1em;
-    z-index: 1;
-}
 
+$margin-label_btn: 5px 0 5px 0;
+$background_color-btn: #1E90FF;
 
-.div_btn_control{
+.yb-app-block_btn_control{
     position: absolute;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -16,45 +10,39 @@
     margin-top: 3em;
 }
 
-
-#prev{
-    padding-bottom: 0px;
-    display: none
+.yb-app-block_btn_control-next_btn_text{
+    float: left;
+    margin: $margin-label_btn;
 }
 
-#next{
+.yb-app-block_btn_control-next_btn_img{
+    float: right;
+}
+
+
+.yb-app-block_btn_control-prev_btn_text{
+    float: right;
+    margin: $margin-label_btn;
+}
+.yb-app-block_btn_control-prev_btn_img{
+    float: left;
+}
+
+
+.yb-app-block_btn_control-prev_btn,
+.yb-app-block_btn_control-next_btn{
     padding-bottom: 0px;
     display: none;
-}
-
-
-#next h6{
-    float: left;
-    margin: 5px 0 5px 0;
-} img{
-    float: right;
-  }
-
-
-#prev h6{
-    float: right;
-    margin: 5px 0 5px 0;
-} img{
-    float: left;
-  }
-
-
-.div_btn_control button{
     background-color: white;
     color: black;
     outline:none;
+    &:hover{
+        box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19);
+        background-color: $background_color-btn;
+        color: white;
+        outline:none;
+    }
 }
 
-.div_btn_control button:hover{
-    box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19);
-    background-color: #1E90FF;
-    color: white;
-    outline:none;
-}
 
 

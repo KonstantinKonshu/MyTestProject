@@ -67,46 +67,43 @@ class App extends PureComponent{
                 this.props.setError(true);
             });
 
-        document.getElementById('btn-back').style.display = 'initial';
-        document.getElementById('next').style.display = 'initial';
+        //document.getElementById('btn-back').style.display = 'initial';
+        //document.getElementById('next').style.display = 'initial';
+        document.getElementsByClassName("yb-sb-main_container-btn_back")[0].style.display = "initial";
+        document.getElementsByClassName("yb-app-block_btn_control-next_btn")[0].style.display = 'initial';
     };
 
     render() {
        return (
             <div>
-                <div className="header_jumbotron">
-                    <SearchBar/>
-                </div>
+
+                <SearchBar/>
 
                 <div className="container">
-                    <div>
-                        <Route path={`/videolist`}>
-                            <VideoList />
-                        </Route>
-                    </div>
+                    <Route path={`/videolist`}>
+                        <VideoList />
+                    </Route>
 
-                    <div>
-                        <Route path='/current-video'>
-                            <CurrentVideoList/>
-                        </Route>
-                    </div>
+                    <Route path='/current-video'>
+                        <CurrentVideoList/>
+                    </Route>
                 </div>
 
-                    <div>
-                        <Route path='/current-channel'>
-                            <CurrentChannelList/>
-                        </Route>
-                    </div>
-                   <div className="div_btn_control">
-                        <button id='prev' onClick={() => this.handleLeafing(this.props.prevPageToken, false)}>
-                            <img src="https://icongr.am/fontawesome/angle-double-left.svg?size=28&color=000000"/>
-                            <h6>Previous</h6>
-                        </button>
-                        <button id='next' onClick={()=>this.handleLeafing(this.props.nextPageToken, true)}>
-                            <h6>Next</h6>
-                            <img src="https://icongr.am/fontawesome/angle-double-right.svg?size=28&color=000000"/>
-                        </button>
-                    </div>
+
+                <Route path='/current-channel'>
+                    <CurrentChannelList/>
+                </Route>
+
+               <div className="yb-app-block_btn_control">
+                    <button className='yb-app-block_btn_control-prev_btn' onClick={() => this.handleLeafing(this.props.prevPageToken, false)}>
+                        <img className="yb-app-block_btn_control-prev_btn_img" src="https://icongr.am/fontawesome/angle-double-left.svg?size=28&color=000000"/>
+                        <h6 className="yb-app-block_btn_control-prev_btn_text">Previous</h6>
+                    </button>
+                    <button className="yb-app-block_btn_control-next_btn" onClick={()=>this.handleLeafing(this.props.nextPageToken, true)}>
+                        <h6 className="yb-app-block_btn_control-next_btn_text">Next</h6>
+                        <img  className="yb-app-block_btn_control-next_btn_img" src="https://icongr.am/fontawesome/angle-double-right.svg?size=28&color=000000"/>
+                    </button>
+                </div>
             </div>
         )
     };
@@ -151,9 +148,12 @@ class App extends PureComponent{
             
         }
 
-        document.getElementById('btn-back').style.display = 'none';
-        document.getElementById('prev').style.display = 'none';
-        document.getElementById('next').style.display = 'initial';
+        // document.getElementById('btn-back').style.display = 'none';
+        // document.getElementById('prev').style.display = 'none';
+        // document.getElementById('next').style.display = 'initial';
+        document.getElementsByClassName("yb-sb-main_container-btn_back")[0].style.display='none';
+        document.getElementsByClassName("yb-app-block_btn_control-prev_btn")[0].style.display = 'none';
+        document.getElementsByClassName("yb-app-block_btn_control-next_btn")[0].style.display = 'initial';
     };
 
     gettingSimilarVideos = (termName) => {
@@ -176,7 +176,8 @@ class App extends PureComponent{
             maxResults: 10,
             pageToken: pgToken,
         };
-        if (indicator) document.getElementById('prev').style.display = 'initial';
+        if (indicator) document.getElementsByClassName("yb-app-block_btn_control-prev_btn")[0].style.display = 'initial';
+        //document.getElementById('prev').style.display = 'initial';
 
         if (this.props.channelId !== null) {
             params["channelId"] = this.props.channelId;
@@ -195,7 +196,8 @@ class App extends PureComponent{
                     this.props.getRequestSearch(receivedData);
 
                     if(prevIndic && !receivedData.prevPageToken)
-                        document.getElementById('prev').style.display = 'none';
+                        document.getElementsByClassName("yb-app-block_btn_control-prev_btn")[0].style.display = 'none';
+                        //document.getElementById('prev').style.display = 'none';
                 }
             )
             .catch(error => {

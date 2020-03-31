@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import VideoItem from "../video_item/video_item";
 import { Link } from "react-router-dom";
 import {connect} from "react-redux";
+import "./video_list.scss";
 
 class VideoList extends Component{
 

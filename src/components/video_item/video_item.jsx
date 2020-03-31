@@ -52,8 +52,10 @@ const VideoItem = ({video}) => {
                     dispatch(setError(true));
                 });
 
-            document.getElementById('next').style.display = 'initial';
-            document.getElementById('btn-back').style.display = 'initial';
+            document.getElementsByClassName("yb-app-block_btn_control-next_btn")[0].style.display = 'initial';
+            document.getElementsByClassName("yb-sb-main_container-btn_back")[0].style.display = "initial";
+            //document.getElementById('next').style.display = 'initial';
+            //document.getElementById('btn-back').style.display = 'initial';
         }
 
     }

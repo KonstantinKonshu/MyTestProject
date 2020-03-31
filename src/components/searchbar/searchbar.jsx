@@ -17,12 +17,12 @@ class Searchbar extends Component{
         this.state = {
             term: "",
         }
-        console.log("SB_props", props);
+        // console.log("SB_props", props);
     }
 
     handleChange = (e) => {
         // e.preventDefault();
-        console.log('handleChange');
+        // console.log('handleChange');
         this.setState({
             term: e.target.value
         })
@@ -61,22 +61,22 @@ class Searchbar extends Component{
                     this.props.setError(true);
                 });
 
-            document.getElementById('btn-back').style.display = 'none';
-            document.getElementById('prev').style.display = 'none';
-            document.getElementById('next').style.display = 'initial';
+            //document.getElementById('btn-back').style.display = 'none';
+            //document.getElementById('prev').style.display = 'none';
+            //document.getElementById('next').style.display = 'initial';
+            document.getElementsByClassName("yb-sb-main_container-btn_back")[0].style.display = 'none';
+            document.getElementsByClassName("yb-app-block_btn_control-prev_btn")[0].style.display = 'none';
+            document.getElementsByClassName("yb-app-block_btn_control-next_btn")[0].style.display = 'initial';
         }
 
         return(
-            <div className="div_search">
-                <img  className="img_search" src="https://icongr.am/clarity/video-gallery.svg?size=30&color=CD0000" />
-                <input  className="input_search" onChange={e => this.handleChange(e)} name='search' type='text'
+            <div className="yb-sb-main_container">
+                <img  className="yb-sb-main_container-img_search" src="https://icongr.am/clarity/video-gallery.svg?size=30&color=CD0000" />
+                <input  className="yb-sb-main_container-input_search" onChange={e => this.handleChange(e)} name='search' type='text'
                        value={this.state.term} placeholder='Enter request'/>
                 <Link to={`/videolist?search=${this.state.term}`}>
-                    <button className='btn_search' onClick={clickSubmit}>Search</button>
-                {/*</Link>*/}
-                {/*/!*<button onClick={e => this.handleSubmit(e)} className='btn_search'>Search</button>*!/*/}
-                {/*<Link to={`/videolist?search=${this.state.term}`}>*/}
-                    <button id='btn-back' className='btn-back' onClick={clickSubmit}>Channel exit</button>
+                    <button className='yb-sb-main_container-btn_search' onClick={clickSubmit}>Search</button>
+                    <button className='yb-sb-main_container-btn_back' onClick={clickSubmit}>Channel exit</button>
                 </Link>
             </div>
         )
