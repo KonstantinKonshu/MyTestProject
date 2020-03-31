@@ -1,10 +1,10 @@
 import React from "react";
-import './style.css';
+import './player_youtube.scss';
 import {useSelector} from "react-redux";
 
 const PlayerYoutube =() => {
 
-    const selectedVideo = useSelector(state => state.videos.selectedVideo);
+    const selectedVideo = useSelector(state => state.videosReducer.selectedVideo);
 
     let identif;
     if(selectedVideo){

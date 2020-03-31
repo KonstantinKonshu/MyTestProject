@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import VideoItem from "../VideoItem";
+import VideoItem from "../video_item/video_item";
 import { Link } from "react-router-dom";
 import {connect} from "react-redux";
 
@@ -35,8 +35,8 @@ class VideoList extends Component{
 }
 
 const mapStateToProps = state =>({
-    videos: state.videos.videos,
-    selectedVideo: state.videos.selectedVideo,
+    videos: state.videosReducer.videos,
+    selectedVideo: state.videosReducer.selectedVideo,
 });
 
 

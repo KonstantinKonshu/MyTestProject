@@ -1,17 +1,18 @@
 import React, {Component, PureComponent} from "react";
-import 'bootstrap/dist/css/bootstrap.css';
-import SearchBar from "../Searchbar";
-import YoutubeAPI from "../YoutubeAPI";
-import VideoList from "../VideoList"
+import SearchBar from "../searchbar/searchbar";
+import YoutubeAPI from "../youtubeAPI/youtubeAPI";
+import VideoList from "../video_list/video_list"
 import {Route} from "react-router-dom";
-import CurrentVideoList from "../CurrentVideoList";
-import CurrentChannelList from "../CurrentChannelList";
-import "./style.css";
+import CurrentVideoList from "../current_video_list/current_video_list";
+import CurrentChannelList from "../current_channel_list/current_channel_list";
+
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
-import { getRequestSearch, handleSubmitInit, handleClickVideo,getBannerChannels, setError} from "../../Actions";
-import {KEY} from "../../Constants";
+import { getRequestSearch, handleSubmitInit, handleClickVideo,getBannerChannels, setError} from "../../actions";
+import {KEY} from "../../constants";
+import "./app.scss";
 
+import 'bootstrap/dist/css/bootstrap.css';
 
 const qs = require('query-string');
 
@@ -28,13 +29,13 @@ class App extends PureComponent{
         console.log('componentDidMount_APP');
         const  s = qs.parse(this.props.searchRouting);
 
-        if(s['search']!==undefined)
+        if(s['search'])
             this.handleSubmit(s['search']);
         else
-            if(s['ChannelId']!==undefined)
+            if(s['ChannelId'])
                 this.handleSubmit(s['ChannelId']);
             else
-                if(s['id']!==undefined)
+                if(s['id'])
                     this.handleSubmit(s['id']);
 
 
@@ -193,7 +194,7 @@ class App extends PureComponent{
                     const receivedData = response.data;
                     this.props.getRequestSearch(receivedData);
 
-                    if(prevIndic && receivedData.prevPageToken === undefined)
+                    if(prevIndic && !receivedData.prevPageToken)
                         document.getElementById('prev').style.display = 'none';
                 }
             )
@@ -211,10 +212,10 @@ class App extends PureComponent{
 const mapStateToProps = state =>({
     searchRouting: state.routing.locationBeforeTransitions.search,
     routeName: state.routing.locationBeforeTransitions.pathname,
-    searchName: state.videos.search,
-    prevPageToken: state.tokens.prevPageToken,
-    nextPageToken: state.tokens.nextPageToken,
-    channelId: state.channels.channelId
+    searchName: state.videosReducer.search,
+    prevPageToken: state.tokensReducer.prevPageToken,
+    nextPageToken: state.tokensReducer.nextPageToken,
+    channelId: state.channelsReducer.channelId
 });
 const mapDispatchToProps = dispatch =>({
     handleSubmitInit: bindActionCreators(handleSubmitInit, dispatch),

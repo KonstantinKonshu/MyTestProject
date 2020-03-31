@@ -1,12 +1,12 @@
 import React, {Component} from "react";
 
-import './style.css';
+import './searchbar.scss';
 import { Link } from "react-router-dom";
 import {bindActionCreators} from "redux";
-import {handleSubmitInit, getRequestSearch, setError} from "../../Actions";
+import {handleSubmitInit, getRequestSearch, setError} from "../../actions";
 import {connect} from "react-redux";
-import YoutubeAPI from "../YoutubeAPI";
-import {KEY} from "../../Constants";
+import YoutubeAPI from "../youtubeAPI/youtubeAPI";
+import {KEY} from "../../constants";
 
 const qs = require('query-string');
 
@@ -32,7 +32,7 @@ class Searchbar extends Component{
         console.log('componentDidMount_SB');
         const st = qs.parse(this.props.searchRouting);
 
-        if(st["search"]!==undefined){
+        if(st["search"]){
             this.setState({
                 term: st["search"]
             })
@@ -68,20 +68,16 @@ class Searchbar extends Component{
 
         return(
             <div className="div_search">
-                <form >
-                    <div>
-                        <img  className="img_search" src="https://icongr.am/clarity/video-gallery.svg?size=30&color=CD0000" />
-                        <input  className="input_search" onChange={e => this.handleChange(e)} name='search' type='text'
-                               value={this.state.term} placeholder='Enter request'/>
-                        <Link to={`/videolist?search=${this.state.term}`}>
-                            <button className='btn_search' onClick={clickSubmit}>Search</button>
-                        {/*</Link>*/}
-                        {/*/!*<button onClick={e => this.handleSubmit(e)} className='btn_search'>Search</button>*!/*/}
-                        {/*<Link to={`/videolist?search=${this.state.term}`}>*/}
-                            <button id='btn-back' className='btn-back' onClick={clickSubmit}>Channel exit</button>
-                        </Link>
-                    </div>
-                </form>
+                <img  className="img_search" src="https://icongr.am/clarity/video-gallery.svg?size=30&color=CD0000" />
+                <input  className="input_search" onChange={e => this.handleChange(e)} name='search' type='text'
+                       value={this.state.term} placeholder='Enter request'/>
+                <Link to={`/videolist?search=${this.state.term}`}>
+                    <button className='btn_search' onClick={clickSubmit}>Search</button>
+                {/*</Link>*/}
+                {/*/!*<button onClick={e => this.handleSubmit(e)} className='btn_search'>Search</button>*!/*/}
+                {/*<Link to={`/videolist?search=${this.state.term}`}>*/}
+                    <button id='btn-back' className='btn-back' onClick={clickSubmit}>Channel exit</button>
+                </Link>
             </div>
         )
     }

@@ -1,4 +1,4 @@
-import {types} from "../Constants";
+import {types} from "../constants";
 const initialState = {
     handleError: null
 }

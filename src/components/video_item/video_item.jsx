@@ -1,10 +1,10 @@
 import React, {Component} from "react";
-import './style.css';
+import './video_item.scss';
 import {animateScroll as scroll} from "react-scroll";
 import {connect, useDispatch} from "react-redux";
-import {handleClickVideo, handleClickChannel, getRequestSearch, getBannerChannels, setError} from "../../Actions";
-import YoutubeAPI from "../YoutubeAPI";
-import {KEY} from "../../Constants";
+import {handleClickVideo, handleClickChannel, getRequestSearch, getBannerChannels, setError} from "../../actions";
+import YoutubeAPI from "../youtubeAPI/youtubeAPI";
+import {KEY} from "../../constants";
 
 
 const VideoItem = ({video}) => {
