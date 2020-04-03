@@ -1,6 +1,6 @@
 
 
-export const KEY = "AIzaSyCIg-49NReS9Qk-ufTjsb7m7tZ_HnI0qqQ";
+export const KEY = "AIzaSyBP19qfjTwchTHfVDTHWkg1WLBF7KSScvk";
 
 export const types = {
     get :{
