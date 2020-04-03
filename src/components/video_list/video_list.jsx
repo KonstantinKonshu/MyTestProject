@@ -28,7 +28,7 @@ class VideoList extends Component{
         );
 
         return(
-            <div className="container">
+            <div className="yb-vl-main_container"/*className="container"*/>
                 {renderedVideos}
             </div>
         )

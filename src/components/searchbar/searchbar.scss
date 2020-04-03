@@ -1,8 +1,10 @@
 .yb-sb-main_container-btn_search{
+    display: flex;
     background-color: orangered;
+    position: absolute;
     color: white;
     outline:none;
-    padding-bottom: 0px;
+    padding: 5.5px;
     &:hover{
         box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19);
         background-color: white;
@@ -13,21 +15,23 @@
 
 .yb-sb-main_container-btn_back{
     display: none;
-    float: right;
+    right: 1em;
+    position: absolute;
     background-color: white;
     color: black;
     outline:none;
-    padding-bottom: 0px;
+    padding: 5.5px;
     &:hover{
         box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19);
         background-color: orangered;
-        color: black;
+        color: white;
         outline:none;
     }
 }
 
 .yb-sb-main_container{
-    /*min-height: 4em;*/
+    display: flex;
+    flex-direction: row;
     top: 0px;
     background: palegoldenrod;
     position: sticky;
@@ -38,9 +42,12 @@
 
 .yb-sb-main_container-input_search{
     padding: 0;
+    //padding-right: 9em;
     border-radius: 50px 0 0 50px;
     outline:none;
     text-indent: 20px;
+    border-color: palegoldenrod;
+    width: 20em;
     /*Border: none;*/
     /*outline: none;*/
 }

@@ -17,7 +17,6 @@ class Searchbar extends Component{
         this.state = {
             term: "",
         }
-        // console.log("SB_props", props);
     }
 
     handleChange = (e) => {
@@ -48,7 +47,7 @@ class Searchbar extends Component{
                 q: this.state.term,
                 part: 'snippet',
                 key: KEY,
-                maxResults: 10
+                maxResults: 20
             };
             YoutubeAPI.get('https://www.googleapis.com/youtube/v3/search', {params})
                 .then(response => {
@@ -60,10 +59,6 @@ class Searchbar extends Component{
                     console.log("ERROR", error);
                     this.props.setError(true);
                 });
-
-            //document.getElementById('btn-back').style.display = 'none';
-            //document.getElementById('prev').style.display = 'none';
-            //document.getElementById('next').style.display = 'initial';
             document.getElementsByClassName("yb-sb-main_container-btn_back")[0].style.display = 'none';
             document.getElementsByClassName("yb-app-block_btn_control-prev_btn")[0].style.display = 'none';
             document.getElementsByClassName("yb-app-block_btn_control-next_btn")[0].style.display = 'initial';
@@ -72,11 +67,13 @@ class Searchbar extends Component{
         return(
             <div className="yb-sb-main_container">
                 <img  className="yb-sb-main_container-img_search" src="https://icongr.am/clarity/video-gallery.svg?size=30&color=CD0000" />
-                <input  className="yb-sb-main_container-input_search" onChange={e => this.handleChange(e)} name='search' type='text'
+                <input  className="yb-sb-main_container-input_search yb-general_text_font" onChange={e => this.handleChange(e)} name='search' type='text'
                        value={this.state.term} placeholder='Enter request'/>
                 <Link to={`/videolist?search=${this.state.term}`}>
-                    <button className='yb-sb-main_container-btn_search' onClick={clickSubmit}>Search</button>
-                    <button className='yb-sb-main_container-btn_back' onClick={clickSubmit}>Channel exit</button>
+                    <button className='yb-sb-main_container-btn_search yb-general_text_font' onClick={clickSubmit}>{'Search'}</button>
+                </Link>
+                <Link to={`/videolist?search=${this.state.term}`}>
+                    <button className='yb-sb-main_container-btn_back yb-general_text_font' onClick={clickSubmit}>{'Channel exit'}</button>
                 </Link>
             </div>
         )

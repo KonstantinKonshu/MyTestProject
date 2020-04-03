@@ -18,31 +18,26 @@ const CurrentVideoList = () => {
     }
 
     return (
-        <div className="container">
-            <div className="row">
-                <div className="col-2-3">
-                    <PlayerYoutube/>
-                    <div className="contain-desc">
-                        <h4>
-                            {title}
-                        </h4>
+        <div className="yb-cvl-main_container">
+            <div className="yb-cvl-main_container-main_video_container">
+                <PlayerYoutube/>
+                <div className="yb-cvl-main_video_constainer-video_content">
+                    <div className="yb-cvl-video_content-title">
+                        {title}
                     </div>
-                    <div className="contain-desc">
-                        <h5>
-                            {channelTitle}
-                        </h5>
+                    <div className="yb-cvl-video_content-channel_title">
+                        {channelTitle}
                     </div>
-                    <div className="contain-desc">
-                        <h6>
-                            {description}
-                        </h6>
+                    <div className="yb-cvl-video_content-desc">
+                        {description}
                     </div>
-
-                </div>
-                <div className="col-1-3">
-                    <VideoList/>
                 </div>
             </div>
+
+            <div className="yb-cvl-main_container-some_videos_container">
+                <VideoList/>
+            </div>
+
         </div>
     )
 

@@ -1,3 +1,25 @@
+.yb-py-main_container{
+    width: 100%;
+    height: auto;
+    position:relative;
+    padding-bottom:56.25%;
+    //padding-top:25px;
+    height:0;
+}
+
+
 .yb-py-player_body{
-    display: block;
+    //display: block;
+    //width: 640px;
+    //height: 360px;
+
+    //min-width: 100%;
+    //min-height: auto;
+    display: inline-block;
+
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
 }

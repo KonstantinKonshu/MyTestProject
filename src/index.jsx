@@ -10,6 +10,7 @@ import { browserHistory} from "react-router";
 import { syncHistoryWithStore } from "react-router-redux";
 import ErrorHandle from "./components/error_handle/error_handle";
 import {useSelector} from "react-redux";
+import "./style.scss";
 
 const store = createStore(reducers, composeWithDevTools());
 const history = syncHistoryWithStore(browserHistory, store);

@@ -24,7 +24,7 @@ const VideoItem = ({video}) => {
                 channelId: video.id.channelId,
                 part: 'snippet',
                 key: KEY,
-                maxResults: 10
+                maxResults: 20
             };
             YoutubeAPI.get('https://www.googleapis.com/youtube/v3/search', {params})
                 .then(response =>{
@@ -54,22 +54,22 @@ const VideoItem = ({video}) => {
 
             document.getElementsByClassName("yb-app-block_btn_control-next_btn")[0].style.display = 'initial';
             document.getElementsByClassName("yb-sb-main_container-btn_back")[0].style.display = "initial";
-            //document.getElementById('next').style.display = 'initial';
-            //document.getElementById('btn-back').style.display = 'initial';
         }
 
     }
 
     return(
-        <div onClick={()=>clickItem(video)} className='video-item item'>
-
-            <div className={video.id.kind==="youtube#video" && 'itemsContainer'}>
-                <img className={video.id.kind==="youtube#channel" ? 'ui-imageRadius' : 'ui-image'} src={video.snippet.thumbnails.medium.url} alt={video.snippet.description}/>
-                <div className="play"><img src="https://img.icons8.com/color/48/000000/youtube-play.png"/></div>
+        <div onClick={()=>clickItem(video)} className='yb-vi-main_container'>
+            <div className={video.id.kind==="youtube#video" ? 'yb-vi-video_container' : 'yb-vi-channel_container'}>
+                <img className={video.id.kind==="youtube#channel" ?
+                    'yb-vi-main_container_item-img_channel yb-vi-main_container-img' :
+                    'yb-vi-main_container_item-img_video yb-vi-main_container-img'}
+                     src={video.snippet.thumbnails.medium.url} alt={video.snippet.description}/>
+                <div className="yb-vi-main_container_item-icon_play"><img src="https://img.icons8.com/color/48/000000/youtube-play.png"/></div>
             </div>
-            <h6 className="content">
+            <div className="yb-vi-main_container-title ">
                 {video.snippet.title}
-            </h6>
+            </div>
         </div>
     )
 };
