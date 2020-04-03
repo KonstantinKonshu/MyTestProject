@@ -179,10 +179,13 @@ class App extends PureComponent{
         YoutubeAPI.get('https://www.googleapis.com/youtube/v3/search', {params})
             .then(response =>{
                     const receivedData = response.data;
+                    console.log('received', receivedData.items.length)
                     this.props.getRequestSearch(receivedData);
 
                     if(prevIndic && !receivedData.prevPageToken)
                         document.getElementsByClassName("yb-app-block_btn_control-prev_btn")[0].style.display = 'none';
+                    if(receivedData.items.length === 0)
+                        this.props.setError(true);
                 }
             )
             .catch(error => {

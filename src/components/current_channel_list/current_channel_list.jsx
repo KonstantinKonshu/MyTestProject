@@ -7,13 +7,11 @@ import "./current_channel_list.scss";
 const Current_channel_list = () => {
 
     const banner = useSelector(state => state.channelsReducer.bannerChannel);
-    //console.log('bannerCurrentChannelList', banner);
     return (
         <div>
             <div className="yb-ccl-banner_channel">
                 <img className="yb-ccl-banner_channel-img" src={banner} alt=""/>
             </div>
-
             <VideoList/>
         </div>
     )

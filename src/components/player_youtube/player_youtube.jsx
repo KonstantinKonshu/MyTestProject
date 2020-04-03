@@ -14,7 +14,7 @@ const PlayerYoutube =() => {
 
     return (
         <div className="yb-py-main_container">
-            <iframe className='yb-py-player_body' type="text/html" //width="640" height="360"
+            <iframe className='yb-py-player_body' type="text/html"
                     src={`http://www.youtube.com/embed/${identif}?autoplay=1&origin=http://example.com`}
                     frameBorder="0"/>
         </div>
