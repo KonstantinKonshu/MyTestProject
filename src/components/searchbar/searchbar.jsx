@@ -47,7 +47,7 @@ class Searchbar extends Component{
                 q: this.state.term,
                 part: 'snippet',
                 key: KEY,
-                maxResults: 20
+                maxResults: 10
             };
             YoutubeAPI.get('https://www.googleapis.com/youtube/v3/search', {params})
                 .then(response => {

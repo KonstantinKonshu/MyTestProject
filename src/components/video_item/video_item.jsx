@@ -24,7 +24,7 @@ const VideoItem = ({video}) => {
                 channelId: video.id.channelId,
                 part: 'snippet',
                 key: KEY,
-                maxResults: 20
+                maxResults: 10
             };
             YoutubeAPI.get('https://www.googleapis.com/youtube/v3/search', {params})
                 .then(response =>{

@@ -45,7 +45,7 @@ class App extends PureComponent{
             channelId: channelID,
             part: 'snippet',
             key: KEY,
-            maxResults: 20
+            maxResults: 10
         };
         this.requestGetSearch(params, false);
 
@@ -129,7 +129,7 @@ class App extends PureComponent{
                     q: termFromSearchBar,
                     part: 'snippet',
                     key: KEY,
-                    maxResults: 20
+                    maxResults: 10
                 };
                 this.requestGetSearch(params, false);
             }
@@ -148,7 +148,7 @@ class App extends PureComponent{
             q: termName,
             part: 'snippet',
             key: KEY,
-            maxResults: 20
+            maxResults: 10
         };
         this.requestGetSearch(params, false);
     };
@@ -160,7 +160,7 @@ class App extends PureComponent{
             q: this.props.searchName,
             part: 'snippet',
             key: KEY,
-            maxResults: 20,
+            maxResults: 10,
             pageToken: pgToken,
         };
         if (indicator) document.getElementsByClassName("yb-app-block_btn_control-prev_btn")[0].style.display = 'initial';
